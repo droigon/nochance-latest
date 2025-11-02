@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { envConfig } from "@/utils/config";
 
 // Replace this with however you normally get the current user
 async function getCurrentUser(req: Request) {
@@ -47,8 +46,8 @@ export async function GET(req: Request) {
   return NextResponse.json({
     scriptUrl: "https://widget.dojah.io/widget.js",
     options: {
-      app_id: envConfig.DOJAH.DOJAH_APP_ID,
-      p_key: envConfig.DOJAH.DOJAH_PUBLIC_KEY,
+      app_id: process.env.DOJAH_APP_ID!,
+      p_key: process.env.DOJAH_PUBLIC_KEY!,
       type: "liveness",
       metadata: { user_id: "123" },
       config: { widget_id: process.env.DOJAH_WIDGET_ID! },
