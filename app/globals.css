@@ -1,0 +1,757 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 1️⃣ Root design tokens (Light Mode Defaults) */
+:root {
+  --font-sans: var(--font-onest), system-ui, sans-serif;
+  --font-family-Title: var(--font-sans);
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Brand Palette */
+  --color-primary: #6b21a8; /* purple-800 */
+  --color-primary-light: #a855f7; /* purple-500 */
+  --color-accent: #d4af37; /* gold */
+  --color-accent-light: #f6e05e; /* light gold */
+
+  /* Custom John Palette */
+  --color-john-50: #f3f9ff;
+  --color-john-100: #d6ecff;
+  --color-john-200: #a7d3ff;
+  --color-john-300: #77baff;
+  --color-john-400: #479fff;
+  --color-john-500: #1a85ff;
+  --color-john-600: #0068e0;
+  --color-john-700: #0050b3;
+  --color-john-800: #003d8a;
+  --color-john-900: #002a61;
+
+  /* Muted + Typography */
+  --color-muted: #f4f4f4;
+  --color-grey-24: #3d3d3d;
+  --color-grey-40: #656565;
+  --color-grey-16: #a855f7;
+  --color-grey-98: #f9fafb;
+
+  /* violet */
+  --color-violet-50: #6c01ff;
+  --color-violet-83: #bea6ff;
+  --color-violet-90: #9333ea;
+  --color-violet-100: #6b01ff;
+  --color-violet-102: #6941c6;
+  --color-violet-103: #f9f5ff;
+  --color-violet-104: #f4edff;
+  /* violet 50 @ 17% opacity token used for hero radial */
+  --color-violet-5017: rgba(108, 1, 255, 0.17);
+
+  --color-blue-500: #444ce7;
+  --color-azure-45: #1891ce;
+  --color-spring-green-41: #1db568;
+  /* explicit fallbacks for gradient stop tokens */
+  --color-azure-458: rgba(24, 145, 206, 0.08);
+  --color-azure-450: rgba(24, 145, 206, 0);
+  --color-blue-5912: rgba(68, 76, 231, 0.12);
+  --color-blue-590: rgba(68, 76, 231, 0);
+  /* Blue background gradient used in several components (180deg fade) */
+  --color-blue-gradient-180: linear-gradient(
+      180deg,
+      var(--color-blue-5912, rgba(68, 76, 231, 0.12)) 0%,
+      var(--color-blue-590, rgba(68, 76, 231, 0)) 100%
+    ),
+    var(--color-white-solid, #fff);
+  --color-azure-gradient-180: linear-gradient(
+      180deg,
+      var(--color-azure-458, rgba(24, 145, 206, 0.08)) 0%,
+      var(--color-azure-450, rgba(24, 145, 206, 0)) 100%
+    ),
+    var(--color-white-solid, #fff);
+
+  /* Typography tokens */
+
+  --font-size-12: 12px;
+  --font-weight-600: 600;
+  --line-height-16_8: 16.8px;
+  --stroke-weight-1: 1px;
+  --font-sans: var(--font-geist-sans, system-ui, sans-serif);
+  --font-mono: var(--font-geist-mono, monospace);
+  /* Explore Categories heading tokens */
+  --color-azure-11: #111827;
+  --font-size-48: 48px;
+  --font-weight-600: 600;
+  --letter-spacing--3: -3px;
+
+  /* Additional token declarations used by ReviewCard */
+  --color-azure-27: #374151;
+  --color-azure-34: #4b5563;
+  --color-spring-green-30: #079455;
+  --item-spacing-18: 18px;
+  --item-spacing-20: 20px;
+  --line-height-21: 21px;
+  --line-height-24: 24px;
+  --font-weight-500: 500;
+}
+
+/* 2️⃣ Tailwind v4 Inline Theme Variables */
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-family-Title: var(--font-sans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-accent: var(--color-accent);
+  --color-accent-light: var(--color-accent-light);
+
+  /* 👇 Register John colors so Tailwind recognizes them */
+  --color-john-50: var(--color-john-50);
+  --color-john-100: var(--color-john-100);
+  --color-john-200: var(--color-john-200);
+  --color-john-300: var(--color-john-300);
+  --color-john-400: var(--color-john-400);
+  --color-john-500: var(--color-john-500);
+  --color-john-600: var(--color-john-600);
+  --color-john-700: var(--color-john-700);
+  --color-john-800: var(--color-john-800);
+  --color-john-900: var(--color-john-900);
+
+  /* color palette */
+  --color-grey-23: var(--color-grey-23);
+  --color-grey-24: var(--color-grey-24);
+  --color-grey-40: var(--color-grey-40);
+  --color-grey-98: var(--color-grey-98);
+
+  --color-blue-500: var(--color-blue-500);
+  --color-azure-45: var(--color-azure-45);
+  --color-spring-green-41: var(--color-spring-green-41);
+
+  --color-violet-50: var(--color-violet-50);
+  --color-violet-83: var(--color-violet-83);
+  --color-violet-90: var(--color-violet-90);
+  --color-violet-100: var(--color-violet-100);
+  --color-violet-102: var(--color-violet-102);
+  --color-violet-103: var(--color-violet-103);
+  --color-violet-104: var(--color-violet-104);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --color-blue-gradient-180: var(--color-blue-gradient-180);
+  --color-azure-gradient-180: var(--color-azure-gradient-180);
+}
+
+/* 3️⃣ Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #fff;
+    --foreground: #f5f5f5;
+    --color-grey-24: #1e1e1e;
+    --color-grey-23: #bdbdbd;
+    --color-primary: #a855f7;
+    --color-accent: #e6c200;
+    /* Optional: tweak John palette for dark mode */
+    --color-john-500: #3d9bff;
+    --color-john-700: #2a6bcc;
+  }
+}
+
+/* 4️⃣ Global Styling */
+body {
+  @apply font-sans antialiased;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  font-family: var(--font-sans);
+}
+
+/* 5️⃣ Optional fallback utilities */
+.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+.text-primary {
+  color: var(--color-primary) !important;
+}
+.bg-accent {
+  background-color: var(--color-accent) !important;
+}
+.text-accent {
+  color: var(--color-accent) !important;
+}
+
+/* Expose tokenized gradients as simple utility classes so components can opt-in
+   without repeating linear-gradient definitions. Use these where you want the
+   subtle 180deg blue/azure fades from the design system. */
+.bg-blue-gradient-180 {
+  background: var(--color-blue-gradient-180) !important;
+}
+.bg-azure-gradient-180 {
+  background: var(--color-azure-gradient-180) !important;
+}
+
+/* Hero radial background utility (applies the supplied radial gradient) */
+.bg-hero-radial {
+  background: radial-gradient(
+    132.34% 76.34% at 50% 100%,
+    var(--color-violet-5017, rgba(108, 1, 255, 0.17)) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  ) !important;
+}
+
+/* 6️⃣ (Optional) John helper classes */
+.bg-john {
+  background-color: var(--color-john-500) !important;
+}
+.text-john {
+  color: var(--color-john-500) !important;
+}
+.border-john {
+  border-color: var(--color-john-500) !important;
+}
+
+/* Fallback utilities for grey tokens (used by components) */
+.bg-grey-24 {
+  background-color: var(--color-grey-24) !important;
+}
+.text-grey-23 {
+  color: var(--color-grey-23, var(--color-grey-24)) !important;
+}
+
+/* Trusted logos heading style (implements your spec) */
+.trusted-logos-heading {
+  color: var(--color-grey-24, #3d3d3d);
+  text-align: center;
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-12, 12px);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--line-height-16_8, 16.8px); /* 140% */
+  letter-spacing: var(--stroke-weight-1, 1px);
+  text-transform: uppercase;
+}
+
+/* Section layout for TrustedLogos */
+.trusted-logos-section {
+  display: flex;
+  height: 283px;
+  padding: 70px 320px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: stretch;
+}
+
+/* Explore Categories heading style */
+.heading-explore-categories {
+  color: var(--color-azure-11, #111827);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-48, 48px);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--font-size-48, 48px); /* 100% */
+  letter-spacing: var(--letter-spacing--3, -3px);
+}
+
+/* FeaturesSection header tokens */
+.features-label {
+  color: var(--color-grey-24, #3d3d3d);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-12, 12px);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--line-height-16_8, 16.8px);
+  letter-spacing: var(--stroke-weight-1, 1px);
+  text-transform: uppercase;
+}
+
+.features-title {
+  color: var(--color-grey-24, #3d3d3d);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-48, 48px);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--font-size-48, 48px);
+  letter-spacing: var(--letter-spacing--3, -3px);
+}
+
+.features-subtitle {
+  color: var(--color-grey-40, #656565);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--font-weight-400, 400);
+  line-height: var(--line-height-24, 24px);
+}
+
+/* Reusable lead paragraph used in Hero and other sections */
+.lead {
+  color: var(--color-grey-40, #656565);
+  margin-top: 1.5rem; /* mt-6 */
+  max-width: 36rem; /* max-w-xl */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lead-normal {
+  color: var(--color-grey-40, #656565);
+  margin-top: 1.5rem; /* mt-6 */
+  max-width: none;
+}
+.see-more-ghost {
+  color: var(--color-violet-50, #6c01ff);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-18, 18px);
+  font-style: normal;
+  font-weight: var(--font-weight-500, 500);
+  line-height: var(--line-height-21_6, 21.6px);
+  background: transparent;
+  border: 1px solid var(--color-violet-50, #6c01ff);
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Reviews section */
+.reviews-section-title {
+  color: var(--color-grey-24, #3d3d3d);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-24, 24px);
+  font-weight: 600;
+}
+
+.reviews-section-subtitle {
+  color: var(--color-grey-40, #656565);
+  font-size: var(--font-size-14, 14px);
+}
+
+.review-card {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Wrapper for a review card (use class to avoid inline styles) */
+.review-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 22px 24px;
+  gap: 12px;
+  align-items: flex-start;
+  align-self: stretch;
+  border-radius: 16px;
+  background: var(--color-white-solid, #fff);
+  line-height: var(--line-height-24, 24px);
+  box-shadow: 0 2px 5px -2px rgba(16, 25, 40, 0.06),
+    0 2px 7px 0 rgba(16, 25, 40, 0.05), 0 0 0 1px rgba(16, 25, 40, 0.05);
+}
+
+/* Reusable review tokenized styles */
+.review-author {
+  color: var(--color-grey-24, #3d3d3d);
+  font-family: var(--font-family-Title, Onest);
+
+  font-style: normal;
+  font-weight: var(--font-weight-500, 500);
+  line-height: var(--line-height-24, 24px);
+}
+
+.review-time {
+  color: var(--color-grey-40, #656565);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-500, 500);
+  line-height: var(--line-height-21, 21px);
+}
+
+.review-store {
+  color: var(--color-spring-green-30, #079455);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-14, 14px);
+  font-style: normal;
+  font-weight: 700; /* per spec */
+  line-height: var(--line-height-21, 21px);
+}
+
+.review-excerpt {
+  color: var(--color-azure-27, #374151);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-400, 400);
+  line-height: var(--line-height-21, 21px);
+}
+
+.review-tag {
+  display: inline-block;
+  color: var(--color-azure-34, #4b5563);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-12, 12px);
+  font-style: normal;
+  font-weight: var(--font-weight-400, 400);
+  line-height: var(--item-spacing-18, 18px);
+  background: var(--color-muted);
+  padding: 6px 12px;
+  border-radius: 9999px;
+}
+
+.review-nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 1px solid var(--color-violet-83, #bea6ff);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient button used in WhySection */
+.btn-gradient {
+  background: linear-gradient(
+    269deg,
+    var(--color-violet-44, #4a00e0) 0%,
+    var(--color-violet-53, #8e2de2) 100%
+  );
+  color: white;
+}
+
+.btn-gradient:hover {
+  filter: brightness(0.97);
+}
+
+/* WhySection image overlay gradient (tokenized) */
+.why-image-overlay {
+  background: linear-gradient(
+    0deg,
+    var(--color-violet-23, #2d0077) 0%,
+    var(--color-violet-2364, rgba(45, 0, 119, 0.64)) 54%,
+    var(--color-violet-230, rgba(45, 0, 119, 0)) 100%
+  );
+}
+
+/* Stats hero */
+.stats-hero {
+  background: linear-gradient(
+    269deg,
+    var(--color-violet-44, #4a00e0) 0%,
+    var(--color-violet-53, #8e2de2) 100%
+  );
+}
+.stat-item {
+  text-align: center;
+}
+
+/* Stats hero title */
+.stats-hero-title {
+  color: var(--Text-On-action, #fff);
+  text-align: center;
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-48, 48px);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--font-size-48, 48px); /* 100% */
+  letter-spacing: var(--letter-spacing--3, -3px);
+}
+
+/* Footer CTA section tokens */
+.footer-cta {
+  background: linear-gradient(
+    278deg,
+    var(--color-violet-50, #6c01ff) 43%,
+    var(--color-violet-35, #4b03af) 43%
+  );
+}
+
+/* Stat value (e.g. 2.5 million+) */
+.stat-value {
+  color: var(--Background-Action-hover-light, #f3f0ff);
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-18, 18px);
+  font-style: normal;
+  font-weight: var(--font-weight-400, 400);
+  line-height: var(--line-height-27, 27px); /* 150% */
+}
+
+/* Stat label (e.g. Verified Identities) */
+.stat-label {
+  font-family: var(--font-family-Title, Onest);
+  font-size: var(--font-size-14, 14px);
+  font-weight: var(--font-weight-400, 400);
+  line-height: var(--line-height-20, 20px);
+  color: var(--color-grey-98, #f9fafb);
+}
+
+/* StatsCard decorative vectors (positions copied from design) */
+.sc-v-dashed-1 {
+  position: absolute;
+  left: 10.14%;
+  right: 9.98%;
+  top: 55.46%;
+  bottom: 44.54%;
+  border: 0.564294px dashed #e0e0e0;
+}
+.sc-v-dashed-2 {
+  position: absolute;
+  left: 10.14%;
+  right: 9.98%;
+  top: 71.08%;
+  bottom: 28.92%;
+  border: 0.564294px dashed #e0e0e0;
+}
+.sc-v-dashed-3 {
+  position: absolute;
+  left: 10.14%;
+  right: 9.98%;
+  top: 63.27%;
+  bottom: 36.73%;
+  border: 0.564294px dashed #e0e0e0;
+}
+.sc-v-dashed-4 {
+  position: absolute;
+  left: 10.14%;
+  right: 9.98%;
+  top: 78.9%;
+  bottom: 21.1%;
+  border: 0.564294px dashed #e0e0e0;
+}
+.sc-v-dashed-5 {
+  position: absolute;
+  left: 10.14%;
+  right: 9.98%;
+  top: 86.71%;
+  bottom: 13.29%;
+  border: 0.564294px dashed #e0e0e0;
+}
+
+.sc-v-gray-1 {
+  position: absolute;
+  left: 3.05%;
+  right: 91.29%;
+  top: 53.75%;
+  bottom: 43.87%;
+  background: #888888;
+}
+.sc-v-gray-2 {
+  position: absolute;
+  left: 3.05%;
+  right: 91.29%;
+  top: 61.72%;
+  bottom: 35.91%;
+  background: #888888;
+}
+.sc-v-gray-3 {
+  position: absolute;
+  left: 3.05%;
+  right: 91.26%;
+  top: 69.68%;
+  bottom: 27.94%;
+  background: #888888;
+}
+.sc-v-gray-4 {
+  position: absolute;
+  left: 3.05%;
+  right: 91.43%;
+  top: 77.65%;
+  bottom: 19.98%;
+  background: #888888;
+}
+.sc-v-gray-5 {
+  position: absolute;
+  left: 7.48%;
+  right: 91.26%;
+  top: 85.93%;
+  bottom: 12.33%;
+  background: #888888;
+}
+
+.sc-v-gray-6 {
+  position: absolute;
+  left: 91.47%;
+  right: 4.01%;
+  top: 54.07%;
+  bottom: 44.19%;
+  background: #888888;
+}
+.sc-v-gray-7 {
+  position: absolute;
+  left: 91.43%;
+  right: 3.96%;
+  top: 62.04%;
+  bottom: 36.22%;
+  background: #888888;
+}
+.sc-v-gray-8 {
+  position: absolute;
+  left: 91.7%;
+  right: 3.83%;
+  top: 70%;
+  bottom: 28.26%;
+  background: #888888;
+}
+.sc-v-gray-9 {
+  position: absolute;
+  left: 91.98%;
+  right: 3.94%;
+  top: 77.97%;
+  bottom: 20.29%;
+  background: #888888;
+}
+.sc-v-gray-10 {
+  position: absolute;
+  left: 95.01%;
+  right: 3.73%;
+  top: 85.93%;
+  bottom: 12.33%;
+  background: #888888;
+}
+
+.sc-v-gray-11 {
+  position: absolute;
+  left: 13.49%;
+  right: 82.84%;
+  top: 90.15%;
+  bottom: 8.13%;
+  background: #888888;
+}
+.sc-v-gray-12 {
+  position: absolute;
+  left: 25.09%;
+  right: 71.23%;
+  top: 90.15%;
+  bottom: 8.13%;
+  background: #888888;
+}
+.sc-v-gray-13 {
+  position: absolute;
+  left: 36.55%;
+  right: 59.57%;
+  top: 90.15%;
+  bottom: 8.13%;
+  background: #888888;
+}
+.sc-v-gray-14 {
+  position: absolute;
+  left: 48.07%;
+  right: 48.18%;
+  top: 90.15%;
+  bottom: 7.68%;
+  background: #888888;
+}
+.sc-v-gray-15 {
+  position: absolute;
+  left: 59.37%;
+  right: 36.36%;
+  top: 90.15%;
+  bottom: 7.57%;
+  background: #888888;
+}
+.sc-v-gray-16 {
+  position: absolute;
+  left: 71.14%;
+  right: 25.15%;
+  top: 90.15%;
+  bottom: 8.13%;
+  background: #888888;
+}
+.sc-v-gray-17 {
+  position: absolute;
+  left: 83.07%;
+  right: 14.03%;
+  top: 90.15%;
+  bottom: 8.13%;
+  background: #888888;
+}
+
+.sc-v-gradient-1 {
+  position: absolute;
+  left: 10.31%;
+  right: 10.32%;
+  top: 71.01%;
+  bottom: 13.3%;
+  background: linear-gradient(
+    180deg,
+    rgba(171, 26, 238, 0.24) 0%,
+    rgba(171, 26, 238, 0) 100%
+  );
+}
+.sc-v-gradient-2 {
+  position: absolute;
+  left: 10.31%;
+  right: 9.74%;
+  top: 53.86%;
+  bottom: 17.82%;
+  background: linear-gradient(
+    180deg,
+    rgba(63, 200, 228, 0.12) 2.35%,
+    rgba(63, 200, 228, 0) 100%
+  );
+}
+
+.sc-v-border-1 {
+  position: absolute;
+  left: 10.54%;
+  right: 9.62%;
+  top: 53.59%;
+  bottom: 34.31%;
+  border: 0.94049px solid #3fc8e4;
+}
+
+/* ensure these decorative vectors sit above/below appropriately inside the stats card */
+.statscard .sc-v-dashed-1,
+.statscard .sc-v-dashed-2,
+.statscard .sc-v-dashed-3,
+.statscard .sc-v-dashed-4,
+.statscard .sc-v-dashed-5,
+.statscard .sc-v-gray-1,
+.statscard .sc-v-gray-2,
+.statscard .sc-v-gray-3,
+.statscard .sc-v-gray-4,
+.statscard .sc-v-gray-5,
+.statscard .sc-v-gray-6,
+.statscard .sc-v-gray-7,
+.statscard .sc-v-gray-8,
+.statscard .sc-v-gray-9,
+.statscard .sc-v-gray-10,
+.statscard .sc-v-gray-11,
+.statscard .sc-v-gray-12,
+.statscard .sc-v-gray-13,
+.statscard .sc-v-gray-14,
+.statscard .sc-v-gray-15,
+.statscard .sc-v-gray-16,
+.statscard .sc-v-gray-17,
+.statscard .sc-v-gradient-1,
+.statscard .sc-v-gradient-2,
+.statscard .sc-v-border-1 {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ===== Reusable Headings ===== */
+
+.heading-2 {
+  color: #3d3d3d;
+  font-family: "Onest", sans-serif;
+  font-size: 70px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 70px; /* 100% */
+  letter-spacing: -2px;
+}
+
+.heading-3 {
+  color: #3d3d3d;
+
+  font-family: "Onest", sans-serif;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 48px; /* 100% */
+  letter-spacing: -3px;
+}
