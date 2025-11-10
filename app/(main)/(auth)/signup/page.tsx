@@ -15,7 +15,7 @@ export default function SignupRolePage() {
           <Link href="/" className="text-gray-500 hover:underline">
             &larr; Back to website
           </Link>
-          <span className="text-sm">
+          <span className="text-sm text-gray-500">
             Already have an account?{" "}
             <Link
               href="/login"
@@ -25,16 +25,16 @@ export default function SignupRolePage() {
             </Link>
           </span>
         </div>
-        <h1 className="text-2xl font-bold mb-8 text-center">
+        <h2 className="text-2xl font-bold heading-3 mb-8 text-center">
           How would you use Nochance?
-        </h1>
+        </h2>
         <div className="flex flex-col gap-6">
           <Link href="/signup/user">
             <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-6 hover:shadow-lg transition cursor-pointer">
               <span className="text-5xl">🧑‍💼</span>
               <div>
                 {" "}
-                <h2 className="font-semibold text-lg mb-1">
+                <h2 className="font-semibold text-grey-24 text-lg mb-1">
                   I'm an individual
                 </h2>
                 <p className="text-gray-600 text-sm">
@@ -48,7 +48,9 @@ export default function SignupRolePage() {
             <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-6 hover:shadow-lg transition cursor-pointer">
               <span className="text-5xl">🏪</span>
               <div>
-                <h2 className="font-semibold text-lg mb-1">I'm a business</h2>
+                <h2 className="font-semibold text-grey-24 text-lg mb-1">
+                  I'm a business
+                </h2>
 
                 <p className="text-gray-600 text-sm">
                   Get verified, earn customer trust, and grow your sales with

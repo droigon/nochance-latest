@@ -103,35 +103,35 @@ export default function StatsCard() {
             <path
               d="M23.9708 6.24561H293.948"
               stroke="#E0E0E0"
-              stroke-width="0.564294"
+              strokeWidth="0.564294"
               stroke-linecap="round"
               stroke-dasharray="1.88 1.88"
             />
             <path
               d="M23.9708 55.1506H293.948"
               stroke="#E0E0E0"
-              stroke-width="0.564294"
+              strokeWidth="0.564294"
               stroke-linecap="round"
               stroke-dasharray="1.88 1.88"
             />
             <path
               d="M23.9708 30.6975H293.948"
               stroke="#E0E0E0"
-              stroke-width="0.564294"
+              strokeWidth="0.564294"
               stroke-linecap="round"
               stroke-dasharray="1.88 1.88"
             />
             <path
               d="M23.9708 79.6035H293.948"
               stroke="#E0E0E0"
-              stroke-width="0.564294"
+              strokeWidth="0.564294"
               stroke-linecap="round"
               stroke-dasharray="1.88 1.88"
             />
             <path
               d="M23.9708 104.057H293.948"
               stroke="#E0E0E0"
-              stroke-width="0.564294"
+              strokeWidth="0.564294"
               stroke-linecap="round"
               stroke-dasharray="1.88 1.88"
             />
@@ -206,7 +206,7 @@ export default function StatsCard() {
             <path
               d="M24.5533 79.0697L41.9728 75.1467L73.3278 61.5667L104.682 70.6197L136.037 68.8097L167.392 75.7507L198.747 67.6027L230.103 54.9287L261.458 67.6027L292.813 57.0407"
               stroke="#DC1AEE"
-              stroke-width="0.94049"
+              strokeWidth="0.94049"
             />
             <path
               d="M24.5533 79.6407V103.735V104.044H292.813V57.0907L261.458 67.9017L230.103 54.9287L198.747 67.9017L167.392 76.2427L136.037 69.1377L104.682 70.9907L73.3278 61.7237L41.9728 75.6247L24.5533 79.6407Z"
@@ -221,7 +221,7 @@ export default function StatsCard() {
             <path
               d="M25.3243 38.2786L42.7438 32.5976L74.0988 16.3616L105.453 38.2786L136.808 37.1456L168.163 23.1766L199.518 25.1026L230.874 3.31561L262.229 20.4736L295.174 0.401611"
               stroke="#3FC8E4"
-              stroke-width="0.94049"
+              strokeWidth="0.94049"
             />
             <defs>
               <linearGradient
@@ -233,7 +233,7 @@ export default function StatsCard() {
                 gradientUnits="userSpaceOnUse"
               >
                 <stop stop-color="#AB1AEE" />
-                <stop offset="1" stop-color="#AB1AEE" stop-opacity="0" />
+                <stop offset="1" stop-color="#AB1AEE" stopOpacity="0" />
               </linearGradient>
               <linearGradient
                 id="paint1_linear_43_7157"
@@ -244,7 +244,7 @@ export default function StatsCard() {
                 gradientUnits="userSpaceOnUse"
               >
                 <stop stop-color="#3FC8E4" />
-                <stop offset="1" stop-color="#3FC8E4" stop-opacity="0" />
+                <stop offset="1" stop-color="#3FC8E4" stopOpacity="0" />
               </linearGradient>
             </defs>
           </svg>

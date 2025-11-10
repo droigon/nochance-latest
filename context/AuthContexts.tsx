@@ -3,26 +3,15 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AuthService } from "@/services/auth/auth";
-
-type User = {
-  id?: string;
-  email?: string;
-  userRole?: string;
-  vendorType?: string;
-  [k: string]: any;
-} | null;
-type Business = {
-  id?: string;
-  businessType?: string;
-  type?: string;
-  [k: string]: any;
-} | null;
+import { AuthCookieService } from "@/lib/auth-cookies";
+import type { User } from "@/utils/types/auth";
+import type { Business } from "@/utils/types/business";
 
 type AuthContextType = {
-  user: User;
-  business: Business;
+  user: User | null;
+  business: Business | null;
   loading: boolean;
-  setUser: (u: User, b?: Business) => void;
+  setUser: (u: User | null, b?: Business | null) => void;
   refresh: () => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -30,81 +19,164 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUserState] = useState<User>(null);
-  const [business, setBusiness] = useState<Business>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUserState] = useState<User | null>(null);
+  const [business, setBusiness] = useState<Business | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // hydrate quickly from localStorage then refresh from server
+    // hydrate quickly from cookies (set by middleware) then localStorage as fallback
+    if (typeof window === "undefined") {
+      return;
+    }
     try {
-      const raw = localStorage.getItem("user");
-      if (raw) setUserState(JSON.parse(raw));
-      const rawBiz = localStorage.getItem("business");
-      if (rawBiz) setBusiness(JSON.parse(rawBiz));
+      const cookieUser = AuthCookieService.getStoredUser();
+      console.log("Hydrating user from cookie:", cookieUser);
+
+      if (cookieUser) {
+        // Try to adapt the cookie user data to our User type
+        if ("id" in cookieUser && cookieUser.id && "email" in cookieUser) {
+          const adaptedUser: User = {
+            id: cookieUser.id as string,
+            email: cookieUser.email as string,
+            fullName:
+              ("fullName" in cookieUser &&
+              typeof cookieUser.fullName === "string"
+                ? cookieUser.fullName
+                : "") ||
+              ("name" in cookieUser && typeof cookieUser.name === "string"
+                ? cookieUser.name
+                : "") ||
+              cookieUser.email || // Fallback to email if name is empty
+              "User",
+            userRole: (cookieUser.userRole as User["userRole"]) || "USER",
+            vendorType: cookieUser.vendorType as User["vendorType"],
+          };
+          setUserState(adaptedUser);
+
+          if (cookieUser.business && typeof cookieUser.business === "object") {
+            const biz = cookieUser.business as Record<string, unknown>;
+            if (biz.id && typeof biz.id === "string") {
+              const adaptedBusiness: Business = {
+                id: biz.id,
+                name: typeof biz.name === "string" ? biz.name : undefined,
+                businessType:
+                  (biz.businessType as Business["businessType"]) ||
+                  (biz.type as Business["businessType"]) ||
+                  "CREATOR",
+                verified:
+                  typeof biz.verified === "boolean" ? biz.verified : false,
+              };
+              setBusiness(adaptedBusiness);
+            }
+          }
+        }
+      } else {
+        // Fallback to localStorage
+        const raw = localStorage.getItem("user");
+        if (raw) {
+          const parsedUser = JSON.parse(raw);
+          setUserState(parsedUser);
+        }
+        const rawBiz = localStorage.getItem("business");
+        if (rawBiz) setBusiness(JSON.parse(rawBiz));
+      }
     } catch {
       setUserState(null);
       setBusiness(null);
     }
 
     (async () => {
-      await refresh();
+      // Only refresh if we don't have any stored user data
+      const hasStoredData =
+        AuthCookieService.getStoredUser() || localStorage.getItem("user");
+      if (!hasStoredData) {
+        await refresh();
+      }
       setLoading(false);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setUser = (u: User, b?: Business) => {
+  const setUser = (u: User | null, b?: Business | null) => {
     setUserState(u);
-    if (b !== undefined) setBusiness(b);
-    try {
-      if (u) localStorage.setItem("user", JSON.stringify(u));
-      else localStorage.removeItem("user");
-      if (b) localStorage.setItem("business", JSON.stringify(b));
-      else if (b === null) localStorage.removeItem("business");
-    } catch {}
+    setBusiness(b || null);
+
+    // Update localStorage for persistence
+    if (u) {
+      localStorage.setItem("user", JSON.stringify(u));
+    } else {
+      localStorage.removeItem("user");
+      AuthCookieService.clearAuthCookies();
+    }
+    if (b) {
+      localStorage.setItem("business", JSON.stringify(b));
+    } else {
+      localStorage.removeItem("business");
+    }
   };
 
   const refresh = async () => {
     try {
       const res = await AuthService.me();
-      if (!res.success) throw new Error("Failed to refresh user");
+      if (!res.success) {
+        // Only clear user if there's no valid cookie/localStorage data
+        const hasStoredData =
+          AuthCookieService.getStoredUser() || localStorage.getItem("user");
+        if (!hasStoredData) {
+          throw new Error("Failed to refresh user and no stored data");
+        }
+        return;
+      }
       const payload = res.data;
+      console.log("Auth refresh payload:", payload);
       const fetchedUser = payload?.user ?? payload;
       const fetchedBusiness = payload?.business ?? null;
-      setUserState(fetchedUser ?? null);
-      setBusiness(fetchedBusiness);
-      try {
-        if (fetchedUser)
+
+      // Only update state if we got valid user data
+      if (fetchedUser) {
+        setUserState(fetchedUser);
+        setBusiness(fetchedBusiness);
+        try {
           localStorage.setItem("user", JSON.stringify(fetchedUser));
-        else localStorage.removeItem("user");
-        if (fetchedBusiness)
-          localStorage.setItem("business", JSON.stringify(fetchedBusiness));
-        else localStorage.removeItem("business");
-      } catch {}
-    } catch (e) {
-      setUserState(null);
-      setBusiness(null);
-      try {
-        localStorage.removeItem("user");
-        localStorage.removeItem("business");
-      } catch {}
+          if (fetchedBusiness)
+            localStorage.setItem("business", JSON.stringify(fetchedBusiness));
+          else localStorage.removeItem("business");
+        } catch {}
+      }
+    } catch {
+      // Only clear user if there's no valid cookie/localStorage data
+      const hasStoredData =
+        AuthCookieService.getStoredUser() || localStorage.getItem("user");
+      if (!hasStoredData) {
+        setUserState(null);
+        setBusiness(null);
+        try {
+          localStorage.removeItem("user");
+          localStorage.removeItem("business");
+        } catch {}
+      }
     }
   };
 
   const logout = async () => {
     try {
+      // Call the backend logout endpoint to invalidate the token server-side
       await AuthService.logout();
-    } catch {
-      // ignore
+    } catch (error) {
+      // Continue with logout even if server call fails
+      console.log(
+        "Server logout failed, continuing with client cleanup:",
+        error
+      );
     } finally {
+      // Clear all client-side state
       setUserState(null);
       setBusiness(null);
-      try {
-        localStorage.removeItem("user");
-        localStorage.removeItem("business");
-        localStorage.removeItem("token");
-        document.cookie = "user=; path=/; max-age=0";
-      } catch {}
+
+      // Nuclear option - clear absolutely everything
+      AuthCookieService.clearAllAuthData();
+
+      // Force a page reload to ensure clean state and redirect to login
+      window.location.href = "/login";
     }
   };
 

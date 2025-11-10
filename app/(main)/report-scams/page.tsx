@@ -1,8 +1,8 @@
 "use client";
 import Header from "@/components/frontend/Header";
 import Footer from "@/components/frontend/Footer";
-import HowReportingWorks from "../../components/frontend/report-scam/HowReportingWorks";
-import VerifiedScams from "../../components/frontend/report-scam/VerifiedScams";
+import HowReportingWorks from "../../../components/frontend/report-scam/HowReportingWorks";
+import VerifiedScams from "../../../components/frontend/report-scam/VerifiedScams";
 import PrimaryButton from "@/components/ui/PrimaryButton";
 import Image from "next/image";
 import Wizard from "@/components/frontend/report-scam/Wizard";

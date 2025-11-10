@@ -6,6 +6,12 @@ export interface User {
   userRole: "USER" | "VENDOR" | "ADMIN"; // Match backend casing
   email: string;
   fullName: string;
+  verified: boolean;
+  status: boolean;
+  country?: string;
+  picture?: string;
+  kyc?: { id: string; status: string };
+
   vendorType?: "CREATOR" | "SME" | "ENTERPRISE"; // only for vendors
 }
 

@@ -11,7 +11,8 @@ type ButtonVariant =
   | "gradientRounded"
   | "whiteRounded"
   | "light"
-  | "lightRounded";
+  | "lightRounded"
+  | "pillSolid";
 
 type ButtonSize = "sm" | "md" | "lg" | "full";
 
@@ -55,6 +56,8 @@ export default function PrimaryButton({
       "rounded-lg border border-violet-103 bg-violet-103 text-violet-102 text-sm font-semibold shadow-sm px-6 py-3 hover:bg-violet-104 transition",
     lightRounded:
       "px-6 py-3 rounded-lg bg-white text-violet-50 font-semibold shadow hover:bg-gray-100 flex items-center gap-2",
+    pillSolid:
+      "px-4 py-2 text-white font-semibold border border-[#6B01FF] bg-[#6B01FF] hover:bg-[#5a01d9] hover:border-[#5a01d9] transition-all duration-200 rounded-[50px]",
   };
 
   const sizes: Record<ButtonSize, string> = {

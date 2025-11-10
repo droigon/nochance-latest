@@ -8,6 +8,7 @@ import Link from "next/link";
 import { AuthService } from "@/services/auth/auth";
 import { toast } from "react-toastify";
 import { useAuth } from "@/context/AuthContexts";
+import { AuthCookieService } from "@/lib/auth-cookies";
 import Image from "next/image";
 
 export default function LoginPage() {
@@ -35,31 +36,22 @@ export default function LoginPage() {
       const business = payload.business ?? null;
       const token = payload.token ?? null;
 
-      // store token if backend returns it (not required if server sets HttpOnly cookie)
-      if (token) {
-        try {
-          localStorage.setItem("token", token);
-        } catch {}
+      // Set auth cookies using our enhanced cookie service
+      if (token && user) {
+        AuthCookieService.setAuthCookies(user as unknown as Record<string, unknown>, token, business as unknown as Record<string, unknown>);
       }
-      // update context + persist safe profile
+      
+      // update context
       setUser(user ?? null, business ?? null);
-
-      // set a readable user cookie in dev only (middleware quick check). Remove in prod.
-      try {
-        if (user) {
-          document.cookie = `user=${encodeURIComponent(
-            JSON.stringify(user)
-          )}; path=/; max-age=${60 * 60 * 24 * 7}`;
-        }
-      } catch {}
 
       // redirect by role
       if (user?.userRole === "ADMIN") router.push("/dashboard/admin");
       else if (user?.userRole === "VENDOR") router.push("/dashboard/vendor");
       else router.push("/dashboard/user");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Login error", err);
-      toast.error(err?.message || "Login failed");
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

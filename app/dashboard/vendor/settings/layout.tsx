@@ -24,7 +24,7 @@ export default function SettingsLayout({
           <ul className="flex gap-6 text-sm text-gray-600">
             <li>
               <Link
-                href="/dashboard/settings/profile"
+                href="/dashboard/vendor/settings/profile"
                 className={
                   active("profile")
                     ? "pb-3 text-indigo-600 border-b-2 border-indigo-600"
@@ -36,7 +36,7 @@ export default function SettingsLayout({
             </li>
             <li>
               <Link
-                href="/dashboard/settings/notifications"
+                href="/dashboard/vendor/settings/notifications"
                 className={
                   active("notifications")
                     ? "pb-3 text-indigo-600 border-b-2 border-indigo-600"
@@ -48,7 +48,7 @@ export default function SettingsLayout({
             </li>
             <li>
               <Link
-                href="/dashboard/settings/integration"
+                href="/dashboard/vendor/settings/integration"
                 className={
                   active("integration")
                     ? "pb-3 text-indigo-600 border-b-2 border-indigo-600"
@@ -60,7 +60,7 @@ export default function SettingsLayout({
             </li>
             <li>
               <Link
-                href="/dashboard/settings/security"
+                href="/dashboard/vendor/settings/security"
                 className={
                   active("security")
                     ? "pb-3 text-indigo-600 border-b-2 border-indigo-600"
@@ -72,7 +72,7 @@ export default function SettingsLayout({
             </li>
             <li>
               <Link
-                href="/dashboard/settings/billing"
+                href="/dashboard/vendor/settings/billing"
                 className={
                   active("billing")
                     ? "pb-3 text-indigo-600 border-b-2 border-indigo-600"

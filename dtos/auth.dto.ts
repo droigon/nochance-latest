@@ -1,7 +1,8 @@
 export interface SignupDTO {
   email: string;
   password: string;
-  role: "user" | "vendor";
+  UserRole: "USER" | "VENDOR";
+  token?: string;
 }
 
 export interface LoginDTO {
@@ -24,6 +25,14 @@ export interface ResetPasswordDTO {
 }
 
 export interface ResetPasswordVerifyDTO {
+  email: string;
+  token: string;
+}
+export interface SendCodeDTO {
+  email: string;
+}
+
+export interface VerifyCodeDTO {
   email: string;
   token: string;
 }

@@ -1,4 +1,11 @@
-// app/terms/page.tsx
-import Link from "next/link";
+"use client";
 
-export default function AdminPage() {}
+import DashboardPage from "@/components/dashboard/components/user/Dashboard";
+
+export default function UserPage() {
+  return (
+    <>
+      <DashboardPage />
+    </>
+  );
+}
