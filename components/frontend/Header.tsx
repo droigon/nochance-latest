@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, User, Settings, LogOut } from "lucide-react";
@@ -10,14 +10,14 @@ export default function Header() {
   const { user: contextUser, logout, loading } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Use context user primarily
   const user = contextUser;
 
-  // Helper to get user name
   const getUserName = (): string => {
     if (!user) return "";
-    if (user.fullName && user.fullName.trim()) return user.fullName;
+    if (user.name?.trim()) return user.name;
     if (user.email) return user.email.split("@")[0];
     return "User";
   };
@@ -25,21 +25,45 @@ export default function Header() {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     setIsDropdownOpen(false);
-    
     try {
       await logout();
     } catch (error) {
-      console.error('Logout failed:', error);
-      // Still redirect to login on error
-      window.location.href = '/login';
+      console.error("Logout failed:", error);
+      window.location.href = "/login";
     } finally {
       setIsLoggingOut(false);
     }
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Hover handlers
+  const handleMouseEnter = () => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Small delay to allow moving cursor from trigger → dropdown smoothly
+    hoverTimeout.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 150);
+  };
+
   return (
     <header className="flex justify-between items-center py-4 px-4 md:px-16 lg:px-28 xl:px-32 bg-white shadow-sm">
-      {/* Logo */}
       <Link
         href="/"
         className="flex items-center gap-2 text-xl font-bold text-purple-700"
@@ -52,7 +76,6 @@ export default function Header() {
         />
       </Link>
 
-      {/* Nav */}
       <nav className="hidden md:flex gap-6 text-gray-700">
         <Link href="/write-review">Write a Review</Link>
         <Link href="/categories">Categories</Link>
@@ -61,18 +84,20 @@ export default function Header() {
         <Link href="/contact-us">Contact Us</Link>
       </nav>
 
-      {/* Actions */}
       {loading ? (
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
         </div>
       ) : user ? (
-        // If logged in, show profile dropdown
-        <div className="relative">
+        <div
+          ref={dropdownRef}
+          className="relative"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <div
             className="flex items-center gap-2 cursor-pointer group"
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            onClick={() => setIsDropdownOpen((prev) => !prev)} // Click for mobile
           >
             <div className="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 font-semibold">
               {getUserName().charAt(0).toUpperCase()}
@@ -80,16 +105,17 @@ export default function Header() {
             <span className="font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
               {getUserName()}
             </span>
-            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-all duration-200 transform group-hover:rotate-180" />
+            <ChevronDown
+              className={`w-4 h-4 text-gray-400 transition-all duration-200 transform ${
+                isDropdownOpen
+                  ? "rotate-180 text-purple-600"
+                  : "group-hover:text-purple-600"
+              }`}
+            />
           </div>
 
-          {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div
-              className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
-            >
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
               <Link
                 href="/profile"
                 className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors"
@@ -110,8 +136,10 @@ export default function Header() {
                 disabled={isLoggingOut}
                 className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors w-full text-left disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <LogOut className={`w-4 h-4 ${isLoggingOut ? 'animate-spin' : ''}`} />
-                {isLoggingOut ? 'Logging out...' : 'Logout'}
+                <LogOut
+                  className={`w-4 h-4 ${isLoggingOut ? "animate-spin" : ""}`}
+                />
+                {isLoggingOut ? "Logging out..." : "Logout"}
               </button>
             </div>
           )}

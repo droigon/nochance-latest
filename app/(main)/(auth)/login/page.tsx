@@ -5,49 +5,41 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/dashboard/components/ui/Input";
 import { Button } from "@/components/dashboard/components/ui/Button";
 import Link from "next/link";
-import { AuthService } from "@/services/auth/auth";
 import { toast } from "react-toastify";
 import { useAuth } from "@/context/AuthContexts";
-import { AuthCookieService } from "@/lib/auth-cookies";
 import Image from "next/image";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const res = await AuthService.login({
+      const result = await login({
         email: form.email,
         password: form.password,
       });
-      if (!res) throw new Error("No response from auth service");
-      if (res.success === false) {
-        toast.error(res.message || "Login failed");
+
+      if (!result.success) {
+        toast.error(result.message || "Login failed");
         return;
       }
 
-      const payload = res.data ?? res;
-      const user = payload.user ?? payload;
-      const business = payload.business ?? null;
-      const token = payload.token ?? null;
+      toast.success(result.message || "Login successful");
 
-      // Set auth cookies using our enhanced cookie service
-      if (token && user) {
-        AuthCookieService.setAuthCookies(user as unknown as Record<string, unknown>, token, business as unknown as Record<string, unknown>);
+      // Redirect based on user role
+      if (result.userRole === "ADMIN") {
+        router.push("/dashboard/admin");
+      } else if (result.userRole === "VENDOR") {
+        router.push("/dashboard/vendor");
+      } else {
+        router.push("/dashboard/user");
       }
-      
-      // update context
-      setUser(user ?? null, business ?? null);
-
-      // redirect by role
-      if (user?.userRole === "ADMIN") router.push("/dashboard/admin");
-      else if (user?.userRole === "VENDOR") router.push("/dashboard/vendor");
-      else router.push("/dashboard/user");
     } catch (err: unknown) {
       console.error("Login error", err);
       const errorMessage = err instanceof Error ? err.message : "Login failed";

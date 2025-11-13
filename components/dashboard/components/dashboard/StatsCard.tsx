@@ -4,12 +4,13 @@ interface StatsCardProps {
   icon: React.ReactNode;
   label: string;
   value: number;
+  iconBgColor?: string;
 }
 
-export function StatsCard({ icon, label, value }: StatsCardProps) {
+export function StatsCard({ icon, label, value, iconBgColor = "bg-purple-50" }: StatsCardProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm flex items-start gap-4 border border-gray-100 transition hover:shadow-md">
-      <div className="w-12 h-12 rounded-md flex items-center justify-center bg-purple-50">
+      <div className={cn("w-12 h-12 rounded-md flex items-center justify-center", iconBgColor)}>
         {icon}
       </div>
       <div>

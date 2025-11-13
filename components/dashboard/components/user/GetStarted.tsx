@@ -8,10 +8,17 @@ import { ShieldCheck, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContexts";
 export default function GetStarted() {
   const [isVisible, setIsVisible] = useState(true);
-  const { user: contextUser, logout, loading } = useAuth();
+
+  const { user } = useAuth();
+  console.log("GetStarted user:", user);
 
   // Don't render if closed
   if (!isVisible) {
+    return null;
+  }
+
+  // Only display if user has kyc.status = true
+  if (user?.kyc?.status === "APPROVED" || user?.kyc?.status === "PENDING") {
     return null;
   }
 
@@ -50,7 +57,7 @@ export default function GetStarted() {
                 verification badge.
               </p>
 
-              <PrimaryButton className="mt-4" variant="pillSolid">
+              <PrimaryButton className="mt-8" variant="solidRounded">
                 Get Started
               </PrimaryButton>
             </div>

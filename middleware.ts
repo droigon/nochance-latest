@@ -8,12 +8,12 @@ function isAuthorizedForRoute(userRole: string, pathname: string): boolean {
     USER: [
       "/dashboard", // Allow root dashboard (will redirect to /dashboard/user)
       "/dashboard/user",
-      "/dashboard/user/*"
+      "/dashboard/user/*",
     ],
     VENDOR: [
       "/dashboard", // Allow root dashboard (will redirect to /dashboard/vendor)
-      "/dashboard/vendor", 
-      "/dashboard/vendor/*"
+      "/dashboard/vendor",
+      "/dashboard/vendor/*",
     ],
     ADMIN: [
       "/dashboard", // Allow root dashboard (will redirect to /dashboard/admin)
@@ -21,26 +21,28 @@ function isAuthorizedForRoute(userRole: string, pathname: string): boolean {
       "/dashboard/admin/*",
       "/dashboard/user", // Admins can access user routes
       "/dashboard/user/*",
-      "/dashboard/vendor", // Admins can access vendor routes  
-      "/dashboard/vendor/*"
-    ]
+      "/dashboard/vendor", // Admins can access vendor routes
+      "/dashboard/vendor/*",
+    ],
   };
 
   const allowedRoutes = roleRoutes[userRole as keyof typeof roleRoutes] || [];
-  
-  const isAuthorized = allowedRoutes.some(route => {
-    if (route.endsWith('/*')) {
+
+  const isAuthorized = allowedRoutes.some((route) => {
+    if (route.endsWith("/*")) {
       const baseRoute = route.slice(0, -2);
       return pathname.startsWith(baseRoute);
     }
     return pathname === route;
   });
-  
+
   if (process.env.NODE_ENV === "development") {
-    console.log(`[Role Check] User: ${userRole}, Path: ${pathname}, Authorized: ${isAuthorized}`);
+    console.log(
+      `[Role Check] User: ${userRole}, Path: ${pathname}, Authorized: ${isAuthorized}`
+    );
     console.log(`[Role Check] Allowed routes:`, allowedRoutes);
   }
-  
+
   return isAuthorized;
 }
 
@@ -86,7 +88,9 @@ export async function middleware(req: NextRequest) {
           return res;
         } else {
           // User is authenticated but not authorized for this route
-          console.log(`[Middleware] User role ${user.userRole} not authorized for ${pathname}`);
+          console.log(
+            `[Middleware] User role ${user.userRole} not authorized for ${pathname}`
+          );
           const unauthorizedUrl = new URL("/dashboard/unauthorized", origin);
           const redirectResp = NextResponse.redirect(unauthorizedUrl);
           redirectResp.headers.set("Content-Security-Policy", buildCsp());
@@ -137,12 +141,12 @@ export async function middleware(req: NextRequest) {
         // Get user data from /me endpoint and set it in cookie for quick future checks
         try {
           const userData = await meResp.json();
-          
+
           // Check if user role is authorized for this route
           if (userData && userData.userRole) {
             if (isAuthorizedForRoute(userData.userRole, pathname)) {
               const res = NextResponse.next();
-              
+
               // Update user cookie with fresh data from /me endpoint
               res.headers.append(
                 "Set-Cookie",
@@ -155,14 +159,19 @@ export async function middleware(req: NextRequest) {
               return res;
             } else {
               // User is authenticated but not authorized for this route
-              console.log(`[Middleware] User role ${userData.userRole} not authorized for ${pathname}`);
-              const unauthorizedUrl = new URL("/dashboard/unauthorized", origin);
+              console.log(
+                `[Middleware] User role ${userData.userRole} not authorized for ${pathname}`
+              );
+              const unauthorizedUrl = new URL(
+                "/dashboard/unauthorized",
+                origin
+              );
               const redirectResp = NextResponse.redirect(unauthorizedUrl);
               redirectResp.headers.set("Content-Security-Policy", buildCsp());
               return redirectResp;
             }
           }
-          
+
           // If no userRole, allow access but don't set cookie
           const res = NextResponse.next();
           res.headers.set("Content-Security-Policy", buildCsp());

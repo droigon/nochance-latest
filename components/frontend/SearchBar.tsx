@@ -18,6 +18,7 @@ export default function SearchBar() {
         onChange={(e) => setQuery(e.target.value)}
         className="flex-grow px-4 py-3 outline-none text-gray-700"
       />
+
       <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-r-lg shadow-md hover:shadow-lg transition flex items-center gap-2">
         Search →
       </button>

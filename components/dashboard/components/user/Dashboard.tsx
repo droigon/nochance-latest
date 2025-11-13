@@ -5,16 +5,19 @@ import { Card, CardContent } from "@/components/ui/cards/card";
 import { StatsCard } from "../dashboard/StatsCard";
 import { PrimaryButton } from "@/components/ui";
 import { useAuth } from "@/context/AuthContexts";
+import { useStatsFresh } from "@/hooks/useStatsFresh";
+import SearchBar from "@/components/frontend/SearchBar";
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  console.log("Dashboard user:", user);
+  const {
+    stats: normalizedStats,
+    loading: statsLoading,
+    error: statsError,
+    refetch: refetchStats,
+  } = useStatsFresh();
+
   const [activeTab, setActiveTab] = useState("reviews");
-  const [stats, setStats] = useState({
-    reviewsPosted: 0,
-    reportsSubmitted: 0,
-    trustedSellers: 0,
-  });
   const [tabData, setTabData] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(true);
   const [tabLoading, setTabLoading] = useState(false);
@@ -30,42 +33,11 @@ export default function DashboardPage() {
     },
   ];
 
-  // Fetch stats from user profile
+  // Initialize loading state once user is confirmed
   useEffect(() => {
-    async function fetchStats() {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // For now, set default values - shows 0 until API is connected
-        setStats({
-          reviewsPosted: 0,
-          reportsSubmitted: 0,
-          trustedSellers: 0,
-        });
-
-        // TODO: Uncomment when the API endpoint is ready
-        // const response = await fetch(`/api/dashboard/stats`, {
-        //   credentials: 'include',
-        // });
-        //
-        // if (response.ok) {
-        //   const data = await response.json();
-        //   if (data.success) {
-        //     setStats(data.data);
-        //   }
-        // }
-      } catch (err) {
-        console.error("Error fetching stats:", err);
-        setError("Failed to load statistics");
-      } finally {
-        setLoading(false);
-      }
+    if (user) {
+      setLoading(false);
     }
-
-    fetchStats();
   }, [user]);
 
   // Fetch tab data
@@ -77,21 +49,14 @@ export default function DashboardPage() {
       setError(null);
 
       try {
-        // Set default empty data first
         setTabData([]);
 
-        // TODO: Uncomment when the API endpoint is ready
-        // const response = await fetch(`/api/dashboard/${activeTab}`, {
-        //   credentials: 'include',
-        // });
-
+        // TODO: Uncomment when API endpoint is ready
+        // const response = await fetch(`/api/dashboard/${activeTab}`, { credentials: "include" });
         // if (response.ok) {
         //   const data = await response.json();
-        //   if (data.success) {
-        //     setTabData(data.data || []);
-        //   } else {
-        //     setError(data.message || 'Failed to load data');
-        //   }
+        //   if (data.success) setTabData(data.data || []);
+        //   else setError(data.message || "Failed to load data");
         // } else {
         //   setError(`HTTP ${response.status}: Failed to load ${activeTab}`);
         // }
@@ -107,7 +72,7 @@ export default function DashboardPage() {
     fetchTabData();
   }, [activeTab, user]);
 
-  // Loading state
+  // Loading skeleton
   if (loading) {
     return (
       <div className="p-6">
@@ -125,35 +90,39 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">
-        Welcome back, {user?.email || "User"}!
-      </h1>
-
-      {/* Stats Cards - Shows 0 by default until API provides real data */}
+    <div className="max-w-6xl mx-auto space-y-6 px-4 py-10 space-y-6">
+      <h3 className="text-2xl font-bold mb-2 text-gray-900">My Dashboard</h3>
+      <p className="text-gray-600 ">
+        Manage your reviews, reports, and trusted sellers
+      </p>
+      <div className="mt-8">
+        <SearchBar />
+      </div>
+      {/* Stats Cards - uses normalized stats from useStats hook */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatsCard
           label="Reviews Posted"
-          value={stats.reviewsPosted}
-          icon={<Star className="w-6 h-6" />}
+          value={normalizedStats.reviewsPosted}
+          icon={<Star color="#6B01FF" fill="#6B01FF" className="w-6 h-6" />}
+          iconBgColor="bg-purple-100"
         />
         <StatsCard
           label="Reports Submitted"
-          value={stats.reportsSubmitted}
-          icon={<Flag className="w-6 h-6" />}
+          value={normalizedStats.reportsSubmitted}
+          icon={<Flag color="#DC2626" fill="#DC2626" className="w-6 h-6" />}
+          iconBgColor="bg-red-100"
         />
         <StatsCard
           label="Trusted Sellers"
-          value={stats.trustedSellers}
-          icon={<Bookmark className="w-6 h-6" />}
+          value={normalizedStats.trustedSellers}
+          icon={<Bookmark color="#1E1D1D" fill="#1E1D1D" className="w-6 h-6" />}
+          iconBgColor="bg-gray-100"
         />
       </div>
-
-      {/* Tabs */}
-      <Card>
+      ]{/* Tabs */}
+      <Card className=" rounded-lg border-[#E5E7EB]">
         <CardContent className="p-0">
-          {/* Tab Navigation */}
-          <div className="border-b border-gray-200">
+          <div className="border-b border-[#E5E7EB]">
             <nav className="-mb-px flex space-x-8 px-6">
               {tabs.map((tab) => (
                 <button
@@ -163,7 +132,7 @@ export default function DashboardPage() {
                     flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm
                     ${
                       activeTab === tab.key
-                        ? "border-blue-500 text-blue-600"
+                        ? "border-[#6B01FF] text-[#6B01FF]"
                         : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                     }
                   `}
@@ -204,7 +173,9 @@ export default function DashboardPage() {
                 <p className="text-gray-400 text-sm">
                   Start engaging with the platform to see your activity here
                 </p>
-                <PrimaryButton className="mt-4">Get Started</PrimaryButton>
+                <PrimaryButton variant="solidRounded" className="mt-4">
+                  Get Started
+                </PrimaryButton>
               </div>
             ) : (
               <div className="space-y-4">
@@ -223,35 +194,7 @@ export default function DashboardPage() {
           </div>
         </CardContent>
       </Card>
-
       {/* Debug Info */}
-      <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-        <h3 className="text-sm font-medium text-gray-700 mb-2">
-          Current State (Debug Info)
-        </h3>
-        <ul className="space-y-1 text-xs text-gray-600">
-          <li>
-            <span className="font-medium">Active Tab:</span> {activeTab}
-          </li>
-          <li>
-            <span className="font-medium">Tab Loading:</span>{" "}
-            {tabLoading ? "Yes" : "No"}
-          </li>
-          <li>
-            <span className="font-medium">Data Count:</span> {tabData.length}{" "}
-            items
-          </li>
-          <li>
-            <span className="font-medium">Stats:</span> Reviews:{" "}
-            {stats.reviewsPosted}, Reports: {stats.reportsSubmitted}, Trusted:{" "}
-            {stats.trustedSellers}
-          </li>
-          <li className="break-all">
-            <span className="font-medium">User:</span>{" "}
-            {user ? `${user.email}` : "Not logged in"}
-          </li>
-        </ul>
-      </div>
     </div>
   );
 }
