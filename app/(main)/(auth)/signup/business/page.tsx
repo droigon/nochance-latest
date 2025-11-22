@@ -20,14 +20,16 @@ export default function VendorSignupPage() {
 
     setLoading(true);
     try {
-      const res = await AuthService.signup({ email, password, role: "vendor" });
-      if (res) {
-        router.push(`/auth/verify?email=${email}`);
-      } else {
-        alert(res);
+      const res = await AuthService.signup({
+        email,
+        password,
+        UserRole: "VENDOR",
+      });
+      if (!res) throw new Error("No response from auth service");
+      if (res.success === false) {
+        return;
       }
-
-      console.log("Signed up vendor:", res);
+      router.push(`/verify?email=${email}`);
     } catch (err) {
       console.error(err);
     } finally {

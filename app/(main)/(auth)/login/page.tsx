@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/dashboard/components/ui/Input";
 import { Button } from "@/components/dashboard/components/ui/Button";
 import Link from "next/link";
-import { AuthService } from "@/services/auth/auth";
 import { toast } from "react-toastify";
 import { useAuth } from "@/context/AuthContexts";
 import Image from "next/image";
@@ -14,52 +13,37 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const res = await AuthService.login({
+      const result = await login({
         email: form.email,
         password: form.password,
       });
-      if (!res) throw new Error("No response from auth service");
-      if (res.success === false) {
-        toast.error(res.message || "Login failed");
+
+      if (!result.success) {
+        toast.error(result.message || "Login failed");
         return;
       }
 
-      const payload = res.data ?? res;
-      const user = payload.user ?? payload;
-      const business = payload.business ?? null;
-      const token = payload.token ?? null;
+      toast.success(result.message || "Login successful");
 
-      // store token if backend returns it (not required if server sets HttpOnly cookie)
-      if (token) {
-        try {
-          localStorage.setItem("token", token);
-        } catch {}
+      // Redirect based on user role
+      if (result.userRole === "ADMIN") {
+        router.push("/dashboard/admin");
+      } else if (result.userRole === "VENDOR") {
+        router.push("/dashboard/vendor");
+      } else {
+        router.push("/dashboard/user");
       }
-      // update context + persist safe profile
-      setUser(user ?? null, business ?? null);
-
-      // set a readable user cookie in dev only (middleware quick check). Remove in prod.
-      try {
-        if (user) {
-          document.cookie = `user=${encodeURIComponent(
-            JSON.stringify(user)
-          )}; path=/; max-age=${60 * 60 * 24 * 7}`;
-        }
-      } catch {}
-
-      // redirect by role
-      if (user?.userRole === "ADMIN") router.push("/dashboard/admin");
-      else if (user?.userRole === "VENDOR") router.push("/dashboard/vendor");
-      else router.push("/dashboard/user");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Login error", err);
-      toast.error(err?.message || "Login failed");
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -125,7 +125,11 @@ export default function IdentityPage() {
       })();
     if (!businessId) throw new Error("Missing business id");
     try {
-      const verify = { category: "IDENTITY" as const, case: "BVN" as const, value: bvn };
+      const verify = {
+        category: "IDENTITY" as const,
+        case: "BVN" as const,
+        value: bvn,
+      };
       const res = await VerificationService.verifyVerification(
         businessId,
         verify
@@ -218,12 +222,6 @@ export default function IdentityPage() {
             <div className="text-xs text-gray-400 mb-2">
               Step {stepNumber} of {totalSteps}
             </div>
-            <h2 className="text-2xl font-semibold text-gray-900">
-              Identity Verification (NIN / BVN)
-            </h2>
-            <p className="text-sm text-gray-500 mt-2">
-              Provide your NIN and/or BVN and upload ID document if available.
-            </p>
           </div>
 
           <IdentifyForm

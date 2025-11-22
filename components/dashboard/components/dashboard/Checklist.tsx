@@ -41,9 +41,9 @@ export default function Checklist({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg md:rounded-lg shadow p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-gray-700">
+        <h2 className="text-xs md:text-sm font-medium text-gray-700">
           Complete your setup ({steps.length})
         </h2>
       </div>
@@ -55,7 +55,7 @@ export default function Checklist({
         />
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-4 md:mt-6 space-y-2 md:space-y-3">
         {steps.map((s) => {
           const status = completed[s.id];
           const done = Boolean(status === true || status === "approved");
@@ -63,21 +63,21 @@ export default function Checklist({
             <Link
               key={s.id}
               href={s.route}
-              className="w-full text-left bg-white rounded-lg shadow-sm p-4 flex items-start gap-4 hover:shadow-md transition"
+              className="w-full text-left bg-white rounded-lg shadow-sm p-3 md:p-4 flex items-start gap-3 md:gap-4 hover:shadow-md transition"
             >
-              <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gray-50">
+              <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg bg-gray-50 flex-shrink-0">
                 {s.icon}
               </div>
 
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="text-base font-medium text-gray-900">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                    <div className="text-sm md:text-base font-medium text-gray-900 truncate">
                       {s.title}
                     </div>
 
                     {s.required && (
-                      <div className="text-xs text-red-600 bg-red-50 px-2 py-0.5 rounded">
+                      <div className="text-xs text-red-600 bg-red-50 px-2 py-0.5 rounded w-fit">
                         Required
                       </div>
                     )}
@@ -88,17 +88,17 @@ export default function Checklist({
                   </div>
                 </div>
 
-                <div className="text-sm text-gray-500 mt-1">{s.desc}</div>
+                <div className="text-xs md:text-sm text-gray-500 mt-1 line-clamp-2">{s.desc}</div>
               </div>
 
-              <div className="flex items-center text-gray-400">
+              <div className="hidden sm:flex items-center text-gray-400 flex-shrink-0">
                 {done ? (
-                  <span className="text-sm text-green-600 font-medium">
+                  <span className="text-xs md:text-sm text-green-600 font-medium whitespace-nowrap">
                     Completed
                   </span>
                 ) : (
                   <svg
-                    className="w-5 h-5"
+                    className="w-4 h-4 md:w-5 md:h-5"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

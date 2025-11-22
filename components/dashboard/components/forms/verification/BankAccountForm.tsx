@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BANKS } from "@/utils/constants/bank";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { DEFAULT_CATEGORIES } from "@/utils/constants/categories";
 
 type BankItem = { code: string; name: string };
 
@@ -15,6 +16,7 @@ type VerifiedInfo = {
 type Draft = {
   bank?: string; // bank code
   account?: string;
+  category?: string;
   verifiedInfo?: VerifiedInfo;
 };
 
@@ -55,6 +57,7 @@ export default function BankForm({
 
   const [bank, setBank] = useState<string>(initialBankCode);
   const [account, setAccount] = useState<string>(initial?.account ?? "");
+  const [category, setCategory] = useState<string>(initial?.category ?? "");
   const [remaining, setRemaining] = useState<number>(ACCOUNT_LEN);
   const [verifying, setVerifying] = useState(false);
   const [verifyError, setVerifyError] = useState<string | null>(null);
@@ -76,6 +79,7 @@ export default function BankForm({
         const code = findCodeByName(d.bank) ?? d.bank ?? initialBankCode;
         setBank((prev) => prev || code || "");
         setAccount((prev) => prev || d.account || initial?.account || "");
+        setCategory((prev) => prev || d.category || initial?.category || "");
         setVerifiedInfo(
           (prev) => prev || d.verifiedInfo || initial?.verifiedInfo || null
         );
@@ -89,12 +93,12 @@ export default function BankForm({
       try {
         localStorage.setItem(
           DRAFT_KEY,
-          JSON.stringify({ bank, account, verifiedInfo })
+          JSON.stringify({ bank, account, category, verifiedInfo })
         );
       } catch {}
     }, 400);
     return () => window.clearTimeout(id);
-  }, [bank, account, verifiedInfo]);
+  }, [bank, account, category, verifiedInfo]);
 
   useEffect(() => {
     const digits = account.replace(/\D/g, "").length;
@@ -111,7 +115,7 @@ export default function BankForm({
   }, [account]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const saveDraftLocal = async () => {
-    const payload: Draft = { bank, account, verifiedInfo };
+    const payload: Draft = { bank, account, category, verifiedInfo };
     await Promise.resolve(onSaveDraft?.(payload));
     try {
       localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
@@ -212,14 +216,13 @@ export default function BankForm({
 
   return (
     <form
-      className="bg-white rounded-xl shadow py-10 px-8 max-w-xl mx-auto"
+      className="bg-white rounded-xl shadow py-6 px-8 max-w-xl mx-auto"
       onSubmit={(e) => {
         e.preventDefault();
         void handleSubmit();
       }}
     >
-      <div className="text-center mb-6">
-        <div className="text-xs text-gray-400 mb-2">Step 4 of 5</div>
+      <div className="text-center ">
         <h2 className="text-2xl font-semibold text-gray-900">
           Bank Account Details
         </h2>
@@ -228,7 +231,22 @@ export default function BankForm({
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="mt-4 space-y-4">
+        <div>
+          <label className="block text-sm text-gray-700 mb-2">
+            Business Category
+          </label>
+          <Select
+            placeholder="Select business category"
+            value={category}
+            onValueChange={(value) => setCategory(value)}
+            options={DEFAULT_CATEGORIES.map((cat) => ({
+              value: cat.id,
+              label: cat.title,
+            }))}
+          />
+        </div>
+
         <div>
           <label className="block text-sm text-gray-700 mb-2">
             Select your bank

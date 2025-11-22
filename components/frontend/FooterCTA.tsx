@@ -5,16 +5,16 @@ import PrimaryButton from "../ui/PrimaryButton";
 export default function FooterCTA() {
   return (
     <section className="footer-cta">
-      <div className="max-w-6xl mx-auto px-6 py-20 flex flex-col lg:flex-row items-center  gap-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-16 py-8 sm:py-12 md:py-16 lg:py-20 flex flex-col lg:flex-row items-center gap-6 sm:gap-8 md:gap-10">
         {/* Left Content */}
         <div className="flex-1">
           <h1
             style={{
               color: "var(--color-grey-97, #F7F7F7)",
-              fontSize: "var(--opacity-70, 50px)",
+              fontSize: "clamp(1.5rem, 8vw, 50px)",
               fontStyle: "normal",
               fontWeight: "var(--font-weight-400, 400)",
-              lineHeight: "var(--opacity-70, 70px)",
+              lineHeight: "1.4",
               letterSpacing: "var(--letter-spacing--2, -2px)",
             }}
           >
@@ -22,11 +22,6 @@ export default function FooterCTA() {
               style={{
                 position: "relative",
                 display: "inline-block",
-                fontSize: "var(--opacity-70, 50px)",
-                fontStyle: "normal",
-                fontWeight: "var(--font-weight-400, 400)",
-                lineHeight: "var(--opacity-70, 70px)",
-                letterSpacing: "var(--letter-spacing--2, -2px)",
               }}
             >
               Ready to Shop with
@@ -40,7 +35,7 @@ export default function FooterCTA() {
                   transform: "translate(-50%, -47%) scale(1.1)",
                   width: "90%",
                   height: "295%",
-                  stroke: "#FFBF38", // ✅ updated color
+                  stroke: "#FFBF38",
                   strokeWidth: "1.8",
                   fill: "none",
                   pointerEvents: "none",
@@ -53,21 +48,21 @@ export default function FooterCTA() {
             Complete Confidence?
           </h1>
 
-          <p className="mt-6 text-md text-gray-200 max-w-md">
+          <p className="mt-4 sm:mt-6 text-xs sm:text-sm md:text-base text-gray-200 max-w-xs sm:max-w-md leading-relaxed">
             Join thousands of satisfied buyers who trust Nochance for secure,
             transparent, and reliable online shopping across Nigeria.
           </p>
 
-          <div className="mt-8 flex gap-4">
-            <PrimaryButton variant="whiteRounded">
-              Login or Sign up <ArrowRight size={18} />
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4">
+            <PrimaryButton variant="whiteRounded" className="text-xs sm:text-sm md:text-base">
+              Login or Sign up <ArrowRight size={16} className="sm:size-[18px]" />
             </PrimaryButton>
-            <PrimaryButton variant="whiteRounded">Businesses</PrimaryButton>
+            <PrimaryButton variant="whiteRounded" className="text-xs sm:text-sm md:text-base">Businesses</PrimaryButton>
           </div>
         </div>
 
         {/* Right Content (Card with Chart Placeholder) */}
-        <div className=" w-full max-w-sm lg:max-w-md">
+        <div className="w-full sm:max-w-sm lg:max-w-md">
           <StatsCard />
         </div>
       </div>

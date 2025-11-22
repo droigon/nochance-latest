@@ -45,25 +45,23 @@ export function useVendorType() {
   useEffect(() => {
     // compute vendorType from auth context when ready
     if (authLoading) {
-      setLoading(true);
       return;
     }
 
     try {
       const vt =
-        (business && (business.businessType ?? business.type)) ??
+        (business && business.businessType) ??
         user?.vendorType ??
-        user?.vendor_type ??
         null;
       setVendorType(vt ?? null);
-      setLoading(false);
       setError(null);
       try {
         if (vt) localStorage.setItem("vendorType", JSON.stringify(vt));
         else localStorage.removeItem("vendorType");
       } catch {}
-    } catch (err: any) {
-      setError(err);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err : new Error(String(err)));
+    } finally {
       setLoading(false);
     }
   }, [authLoading, user, business, refresh]);

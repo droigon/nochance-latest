@@ -5,6 +5,7 @@ import PersonalDetailsForm from "@/components/dashboard/components/forms/verific
 import { useAuth } from "@/context/AuthContexts";
 import { useVendorType } from "@/hooks/useVendorTypes";
 import { useVerificationSteps } from "@/hooks/useVerificationSteps";
+import { useVerification } from "@/context/VerificationContext";
 import { VerificationService } from "@/services/verifications/verifications";
 
 export default function PersonalDetailsPage() {
@@ -12,8 +13,9 @@ export default function PersonalDetailsPage() {
   const { business } = useAuth();
   const { vendorType, loading: vendorLoading } = useVendorType();
   const steps = useVerificationSteps(vendorType ?? "");
+  const { markComplete } = useVerification();
 
-  const [initial, setInitial] = useState<Record<string, any>>();
+  const [initial, setInitial] = useState<Record<string, unknown>>();
   const [loading, setLoading] = useState(true);
 
   const currentId = "PERSONAL";
@@ -53,7 +55,7 @@ export default function PersonalDetailsPage() {
     load();
   }, [business?.id, vendorLoading]);
 
-  const handleContinue = async (values: Record<string, any>) => {
+  const handleContinue = async (values: Record<string, unknown>) => {
     if (!business?.id) return;
     try {
       const res = await VerificationService.savePersonal(business.id, {
@@ -67,6 +69,9 @@ export default function PersonalDetailsPage() {
         alert("Failed to save personal details. Please try again.");
         return; // ❌ stop here, do NOT navigate
       }
+
+      // Mark step as complete in context
+      await markComplete("PERSONAL", values);
 
       const nextId = idx < ids.length - 1 ? ids[idx + 1] : null;
       router.push(

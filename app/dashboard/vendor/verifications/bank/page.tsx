@@ -117,7 +117,8 @@ export default function BankAccountPage() {
       }
 
       // Return consistent structure for BankForm
-      return { success: true, data: res.data?.[0] ?? res.data };
+      const dataValue = Array.isArray(res.data) ? res.data[0] : res.data;
+      return { success: true, data: dataValue };
     } catch (e) {
       console.error("verify-account error:", e);
       return { success: false };
@@ -175,29 +176,27 @@ export default function BankAccountPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto py-12 px-6">
-        <div className="w-full max-w-2xl mx-auto">
-          <div className="text-center mb-6">
-            <div className="text-xs text-gray-400 mb-2">
-              Step {stepNumber} of {totalSteps}
-            </div>
-            <h2 className="text-2xl font-semibold text-gray-900">
-              Bank Account
-            </h2>
-            <p className="text-sm text-gray-500 mt-2">
-              Provide your bank account details for payouts and verification.
-            </p>
-          </div>
+    <div className="flex min-h-screen bg-gray-50">
+      <div className="flex-1 flex flex-col">
+        <main className="p-8 overflow-y-auto">
+          <div className="min-h-[70vh] flex items-start justify-center px-4">
+            <div className="w-full max-w-2xl">
+              <div className="text-center mb-6">
+                <div className="text-xs text-gray-400">
+                  {loading ? "Loading…" : `Step ${stepNumber} of ${totalSteps}`}
+                </div>
+              </div>
 
-          <BankForm
-            initial={initial}
-            onVerifyAccount={handleVerifyAccount}
-            onSaveDraft={handleSaveDraft}
-            onNext={handleNext}
-          />
-        </div>
+              <BankForm
+                initial={initial}
+                onVerifyAccount={handleVerifyAccount}
+                onSaveDraft={handleSaveDraft}
+                onNext={handleNext}
+              />
+            </div>
+          </div>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }

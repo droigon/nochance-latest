@@ -5,6 +5,8 @@ import {
   ForgotPasswordDTO,
   ResetPasswordDTO,
   ResetPasswordVerifyDTO,
+  SendCodeDTO,
+  VerifyCodeDTO,
 } from "@/dtos/auth.dto";
 import { apiFetch } from "@/lib/api";
 import { ApiResponse } from "@/utils/types/api";
@@ -75,6 +77,18 @@ export const AuthService = {
   async me(): Promise<AuthResponse> {
     return apiFetch<AuthResponse>(API_ROUTES.me, {
       method: "GET",
+    });
+  },
+  async sendCode(data: SendCodeDTO): Promise<ApiResponse<null>> {
+    return apiFetch<ApiResponse<null>>(API_ROUTES.sendCode, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  async verifyCode(data: VerifyCodeDTO): Promise<ApiResponse<null>> {
+    return apiFetch<ApiResponse<null>>(API_ROUTES.verifyCode, {
+      method: "POST",
+      body: JSON.stringify(data),
     });
   },
 };

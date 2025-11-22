@@ -1,6 +1,13 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Input } from "../../ui";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
+import { Input, Select, Textarea } from "../../ui";
+import { DEFAULT_CATEGORIES } from "@/utils/constants/categories";
 
 type Props = {
   initial?: Record<string, any>;
@@ -12,11 +19,21 @@ export default function CACDetailsForm({ initial = {}, onContinue }: Props) {
     type: (initial?.type as "RC" | "BN") || "RC",
     name: initial?.name || "",
     number: initial?.number || "",
+    logoUrl: initial?.logoUrl || "",
+    address: initial?.address || "",
+    category: (initial?.category as "CREATOR" | "SME" | "ENTERPRISE") || "SME",
+    description: initial?.description || "",
     //file: null as File | null,
   });
 
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Filter categories to only show SME categories
+  const smeCategories = useMemo(
+    () => DEFAULT_CATEGORIES.filter((cat) => cat.businessType === "SME"),
+    []
+  );
 
   useEffect(() => {
     if (initial && Object.keys(initial).length > 0) {
@@ -51,24 +68,26 @@ export default function CACDetailsForm({ initial = {}, onContinue }: Props) {
 
       {/* Registration Type */}
       <div className="flex items-center gap-6 mb-6">
-        <label className="inline-flex items-center gap-2">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
             name="regType"
             checked={form.type === "RC"}
             onChange={() => handleChange("type", "RC")}
+            className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
           />
-          <span className="text-sm">RC (Limited Company)</span>
+          <span className="text-sm text-gray-700">RC (Limited Company)</span>
         </label>
 
-        <label className="inline-flex items-center gap-2">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
             name="regType"
             checked={form.type === "BN"}
             onChange={() => handleChange("type", "BN")}
+            className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
           />
-          <span className="text-sm">BN (Business Name)</span>
+          <span className="text-sm text-gray-700">BN (Business Name)</span>
         </label>
       </div>
 
@@ -95,6 +114,45 @@ export default function CACDetailsForm({ initial = {}, onContinue }: Props) {
             placeholder="RC123456"
             value={form.number}
             onChange={(e) => handleChange("number", e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Business Address
+          </label>
+          <Input
+            type="text"
+            placeholder="Enter your business address"
+            value={form.address}
+            onChange={(e) => handleChange("address", e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Business Category
+          </label>
+          <Select
+            placeholder="Select business category"
+            value={form.category}
+            onValueChange={(value) => handleChange("category", value)}
+            options={smeCategories.map((cat) => ({
+              value: cat.id,
+              label: cat.title,
+            }))}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Business Description
+          </label>
+          <Textarea
+            placeholder="Describe your business, products, and services"
+            value={form.description}
+            onChange={(e) => handleChange("description", e.target.value)}
+            rows={4}
           />
         </div>
 

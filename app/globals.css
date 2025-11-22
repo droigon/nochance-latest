@@ -44,6 +44,7 @@
   --color-violet-102: #6941c6;
   --color-violet-103: #f9f5ff;
   --color-violet-104: #f4edff;
+  --color-violet-105: #f3f0ff;
   /* violet 50 @ 17% opacity token used for hero radial */
   --color-violet-5017: rgba(108, 1, 255, 0.17);
 
@@ -135,6 +136,7 @@
   --color-violet-102: var(--color-violet-102);
   --color-violet-103: var(--color-violet-103);
   --color-violet-104: var(--color-violet-104);
+  --color-violet-105: var(--color-violet-105);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
@@ -414,16 +416,14 @@ body {
 
 /* Gradient button used in WhySection */
 .btn-gradient {
-  background: linear-gradient(
-    269deg,
-    var(--color-violet-44, #4a00e0) 0%,
-    var(--color-violet-53, #8e2de2) 100%
-  );
-  color: white;
+  background: linear-gradient(269deg, #4a00e0 0%, #8e2de2 100%);
+  color: white !important;
+  border: none;
 }
 
 .btn-gradient:hover {
-  filter: brightness(0.97);
+  background: linear-gradient(269deg, #3d00b8 0%, #7a26c4 100%);
+  color: white !important;
 }
 
 /* WhySection image overlay gradient (tokenized) */
@@ -754,4 +754,26 @@ body {
   font-weight: 400;
   line-height: 48px; /* 100% */
   letter-spacing: -3px;
+}
+
+.heading-4 {
+  color: #3d3d3d;
+
+  font-family: "Onest", sans-serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 48px; /* 100% */
+  letter-spacing: -3px;
+}
+
+.heading-3i {
+  color: #3d3d3d;
+
+  font-family: "Onest", sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px; /* 100% */
+  letter-spacing: -2px;
 }

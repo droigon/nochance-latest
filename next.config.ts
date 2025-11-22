@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    root: __dirname, // 👈 Force the correct project root
+  },
+
   images: {
     remotePatterns: [
       {
@@ -16,6 +20,10 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
     ],
+  },
+
+  experimental: {
+    proxyTimeout: 30 * 1000, // 30 seconds for proxy operations
   },
 };
 
