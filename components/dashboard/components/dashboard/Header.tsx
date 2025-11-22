@@ -1,19 +1,21 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Bell, Cog, User, LogOut, ChevronDown } from "lucide-react";
+import { useAuth } from "@/context/AuthContexts";
 
-export default function Header({
-  userName = "Benny Mulla",
-}: {
-  userName?: string;
-}) {
+export default function Header() {
+  const { user } = useAuth();
+  const userName = user?.name || "";
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     }
@@ -41,10 +43,6 @@ export default function Header({
         <h1 className="text-xl font-semibold text-gray-900">
           Hello, {userName}
         </h1>
-        <p className="text-sm text-gray-600">
-          Finish setting up your account to start getting reviews and invite
-          customers
-        </p>
       </div>
 
       <div className="flex items-center gap-3">
@@ -59,15 +57,23 @@ export default function Header({
 
         {/* Account Dropdown */}
         <div className="relative" ref={dropdownRef}>
-          <button 
+          <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center gap-2 p-1 rounded-md hover:bg-gray-100 transition-colors"
           >
             <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              {userName.split(' ').map(n => n[0]).join('').toUpperCase()}
+              {userName
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()}
             </div>
             <div className="hidden sm:block text-sm text-gray-700">Account</div>
-            <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
 
           {/* Dropdown Menu */}
@@ -77,10 +83,16 @@ export default function Header({
               <div className="px-4 py-3 border-b border-gray-100">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    {userName.split(' ').map(n => n[0]).join('').toUpperCase()}
+                    {userName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{userName}</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {userName}
+                    </p>
                     <p className="text-xs text-gray-500">Vendor Account</p>
                   </div>
                 </div>
@@ -95,7 +107,7 @@ export default function Header({
                   <User className="w-4 h-4 text-gray-500" />
                   View Profile
                 </button>
-                
+
                 <button
                   onClick={() => {
                     setIsDropdownOpen(false);

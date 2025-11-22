@@ -3,6 +3,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AuthService } from "@/services/auth/auth";
 import { AuthCookieService } from "@/lib/auth-cookies";
+import {
+  registerLogoutHandler,
+  unregisterLogoutHandler,
+} from "@/lib/auth-handler";
 import type {
   IUSER,
   AuthSuccessData,
@@ -42,6 +46,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [permissions, setPermissions] = useState<PermissionsMap | null>(null);
   const [session, setSession] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
+
+  /** Logout user */
+  const logout = async () => {
+    try {
+      //await AuthService.logout();
+    } catch (error) {
+      console.log("Server logout failed:", error);
+    } finally {
+      setUserState(null);
+      setBusiness(null);
+      setStats(null);
+      setPermissions(null);
+      setSession(null);
+      AuthCookieService.clearAllAuthData();
+      localStorage.clear();
+      window.location.assign("/login");
+    }
+  };
+
+  // Register logout handler for global access (e.g., from apiFetch)
+  // This must be after logout is defined
+  useEffect(() => {
+    registerLogoutHandler(logout);
+    return () => {
+      unregisterLogoutHandler();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Optimized hydration on first load
   useEffect(() => {
@@ -289,24 +320,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem("user");
         localStorage.removeItem("business");
       }
-    }
-  };
-
-  /** Logout user */
-  const logout = async () => {
-    try {
-      //await AuthService.logout();
-    } catch (error) {
-      console.log("Server logout failed:", error);
-    } finally {
-      setUserState(null);
-      setBusiness(null);
-      setStats(null);
-      setPermissions(null);
-      setSession(null);
-      AuthCookieService.clearAllAuthData();
-      localStorage.clear();
-      window.location.assign("/login");
     }
   };
 

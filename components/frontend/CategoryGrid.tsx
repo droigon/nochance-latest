@@ -1,22 +1,25 @@
-type Category = {
-  id: string;
-  title: string;
-  items: string[];
-};
+import {
+  DEFAULT_CATEGORIES,
+  type Category,
+} from "@/utils/constants/categories";
 
 function CategoryCard({ category }: { category: Category }) {
   return (
-    <div className="bg-white border border-gray-100 rounded-lg shadow-sm p-4">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 font-semibold">
-          {category.title.charAt(0)}
+    <div className="bg-white border border-gray-100 rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-4">
+      <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+        <div
+          className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full p-2 ${category.color} flex items-center justify-center flex-shrink-0`}
+        >
+          {category.icon}
         </div>
-        <h3 className="text-sm font-medium text-gray-900">{category.title}</h3>
+        <h3 className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+          {category.title}
+        </h3>
       </div>
 
       <ul className="grid grid-cols-2 gap-y-1 text-xs text-gray-500 leading-tight">
         {category.items.map((it, idx) => (
-          <li key={idx} className="pr-2">
+          <li key={idx} className="pr-1 sm:pr-2 truncate">
             {it}
           </li>
         ))}
@@ -31,15 +34,15 @@ export default function CategoryGrid({
   categories?: Category[];
 }) {
   return (
-    <section className="py-12 px-4">
+    <section className="py-6 sm:py-8 md:py-10 lg:py-12 px-4 sm:px-6 md:px-8 lg:px-16">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-xl font-semibold text-gray-900">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">
             Browse by Category
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
           {categories.map((c) => (
             <CategoryCard key={c.id} category={c} />
           ))}
@@ -48,108 +51,3 @@ export default function CategoryGrid({
     </section>
   );
 }
-
-const DEFAULT_CATEGORIES: Category[] = [
-  {
-    id: "food-1",
-    title: "Food & Drinks",
-    items: [
-      "Restaurants",
-      "Bakeries",
-      "Bars & Lounges",
-      "Cafes",
-      "Fast Food",
-      "Food Vendors",
-    ],
-  },
-  {
-    id: "food-2",
-    title: "Food & Drinks",
-    items: [
-      "Tailors",
-      "Salons & Barbers",
-      "Nail Technicians",
-      "Shoe Makers",
-      "Boutiques",
-      "Makeup Artists",
-    ],
-  },
-  {
-    id: "food-3",
-    title: "Food & Drinks",
-    items: [
-      "Electricians",
-      "AC/Gen Repair",
-      "Security",
-      "Plumbers",
-      "Cleaners",
-      "Gardening",
-    ],
-  },
-  {
-    id: "food-4",
-    title: "Food & Drinks",
-    items: [
-      "Clinics",
-      "Labs",
-      "Dentists",
-      "Pharmacies",
-      "Physiotherapy",
-      "Opticians",
-    ],
-  },
-  {
-    id: "food-5",
-    title: "Food & Drinks",
-    items: [
-      "Electronics Shops",
-      "Supermarkets",
-      "Computer Shops",
-      "Gift Shops",
-      "Phone Accessories",
-      "Bookstores",
-    ],
-  },
-  {
-    id: "food-6",
-    title: "Food & Drinks",
-    items: [
-      "Ride-hailing",
-      "Auto Mechanics",
-      "Toll Agencies",
-      "Logistics",
-      "Car Wash",
-      "Spare Parts",
-    ],
-  },
-  {
-    id: "food-7",
-    title: "Food & Drinks",
-    items: ["Event Planners", "Rentals", "Videographers", "Decorators", "DJs"],
-  },
-  {
-    id: "food-8",
-    title: "Food & Drinks",
-    items: ["Tutors", "Skills Academies", "Computer Training", "Music Lessons"],
-  },
-  {
-    id: "food-9",
-    title: "Food & Drinks",
-    items: ["Builders", "Welders", "Tilts", "Architects"],
-  },
-  {
-    id: "food-10",
-    title: "Food & Drinks",
-    items: ["Caterers", "Event Venues", "Cooks", "Food Trucks"],
-  },
-  {
-    id: "food-11",
-    title: "Food & Drinks",
-    items: ["Florists", "Gift Stores", "Party Supplies"],
-  },
-  {
-    id: "food-12",
-    title: "Food & Drinks",
-    items: ["Pet Care", "Veterinarians", "Pet Shops"],
-  },
-];

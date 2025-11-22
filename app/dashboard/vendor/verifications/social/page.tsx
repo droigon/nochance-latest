@@ -140,33 +140,27 @@ export default function SocialMediaPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        <div className="border-t border-dashed border-purple-200/40" />
-        <div className="flex flex-col items-center justify-center py-12 px-6">
-          <div className="w-full max-w-2xl">
-            <div className="text-center mb-6">
-              <div className="text-xs text-gray-400 mb-2">
-                Step {stepNumber} of {totalSteps}
+    <div className="flex min-h-screen bg-gray-50">
+      <div className="flex-1 flex flex-col">
+        <main className="p-8 overflow-y-auto">
+          <div className="min-h-[70vh] flex items-start justify-center px-4">
+            <div className="w-full max-w-2xl">
+              <div className="text-center mb-6">
+                <div className="text-xs text-gray-400">
+                  {loading ? "Loading…" : `Step ${stepNumber} of ${totalSteps}`}
+                </div>
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Social Media Handles
-              </h2>
-              <p className="text-sm text-gray-500 mt-2">
-                Add your key social accounts (Instagram, X/Twitter, TikTok,
-                YouTube, etc.)
-              </p>
-            </div>
 
-            <SocialMediaForm
-              embedded
-              initial={initial}
-              onSaveDraft={handleSaveDraft}
-              onNext={handleNext}
-            />
+              <SocialMediaForm
+                embedded
+                initial={initial}
+                onSaveDraft={handleSaveDraft}
+                onNext={handleNext}
+              />
+            </div>
           </div>
-        </div>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { VerificationProvider } from "@/context/VerificationContext";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function VerificationsLayout({
   children,
@@ -21,10 +24,6 @@ export default function VerificationsLayout({
 
   const save = () => {
     window.dispatchEvent(new CustomEvent("verification:save"));
-  };
-
-  const cont = () => {
-    window.dispatchEvent(new CustomEvent("verification:continue"));
   };
 
   return (
@@ -74,7 +73,9 @@ export default function VerificationsLayout({
         <div className="border-t border-dashed border-purple-200/40" />
 
         <div className="flex flex-col items-center justify-center py-12 px-6">
-          <div className="w-full max-w-2xl">{children}</div>
+          <div className="w-full max-w-2xl">
+            <VerificationProvider>{children}</VerificationProvider>
+          </div>
         </div>
       </div>
     </main>

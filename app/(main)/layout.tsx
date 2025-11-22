@@ -11,8 +11,9 @@ const onest = Onest({
 });
 
 export const metadata: Metadata = {
-  title: "NoChance",
-  description: "Modern design powered by Onest font",
+  title: "Nochance Application Technologies",
+  description:
+    "Nigeria's trusted platform connecting buyers with verified sellers. Check trust scores, read reviews, and shop safely.",
 };
 
 export default function RootLayout({

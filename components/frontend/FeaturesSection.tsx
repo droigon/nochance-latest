@@ -104,50 +104,50 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <div className="bg-gray-50 py-20 px-6">
+    <div className="bg-gray-50 py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-16">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="text-sm font-semibold text-grey-24 mb-4 uppercase tracking-wider">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <div className="text-xs sm:text-sm font-semibold text-grey-24 mb-3 sm:mb-4 uppercase tracking-wider">
             Features
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-grey-24 mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-grey-24 mb-4 sm:mb-6">
             Safer Shopping.
             <br />
             Smarter Protections
           </h2>
-          <p className=" text-grey-40 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-grey-40 text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed px-2">
             Advanced verification, transparent reviews, and rapid fraud response
             keep you protected while shopping.
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12">
           {features.map((feature) => (
             <div
               key={feature.id}
-              className={`${feature.bgColor} rounded-2xl p-8 hover:shadow-lg transition-shadow duration-300`}
+              className={`${feature.bgColor} rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 hover:shadow-lg transition-shadow duration-300`}
             >
               {/* Icon */}
               <div
-                className={`w-16 h-16 ${feature.iconBg}  flex items-center justify-center mb-6`}
+                className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 ${feature.iconBg} flex items-center justify-center mb-4 sm:mb-6 rounded-lg`}
               >
                 {/* inline SVG component already defines its own sizing/colors */}
                 <feature.icon />
               </div>
 
               {/* Content */}
-              <h3 className="text-[24px] font-medium leading-9 text-grey-24 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-medium leading-7 sm:leading-8 md:leading-9 text-grey-24 mb-3 sm:mb-4">
                 {feature.title}
               </h3>
-              <p className="text-grey-40 text-base leading-relaxed mb-8">
+              <p className="text-grey-40 text-xs sm:text-sm md:text-base leading-relaxed mb-6 sm:mb-8">
                 {feature.description}
               </p>
 
               {/* Learn More Link */}
               <button
-                className={`text-grey-24 font-semibold flex items-center gap-2 hover:gap-3 transition-all duration-200`}
+                className={`text-grey-24 font-semibold flex items-center gap-2 hover:gap-3 transition-all duration-200 text-xs sm:text-sm md:text-base`}
               >
                 Learn more <ArrowRight className="text-violet-50" size={16} />
               </button>
@@ -157,7 +157,7 @@ export default function FeaturesSection() {
 
         {/* See More Button */}
         <div className="text-center">
-          <PrimaryButton className="btn-gradient  font-semibold flex items-center gap-[10px] px-6 pt-[11px] pb-[12px]">
+          <PrimaryButton className="btn-gradient font-semibold flex items-center gap-2 sm:gap-[10px] px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm md:text-base">
             See More <ArrowRight size={18} />
           </PrimaryButton>
         </div>

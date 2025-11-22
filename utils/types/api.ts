@@ -12,3 +12,12 @@ export interface ApiErrorResponse {
 }
 
 export type ApiResult<T> = ApiResponse<T> | ApiErrorResponse;
+
+export interface StandardResponse<T> {
+  statusCode?: number;
+  success: boolean;
+  message: string;
+  data: T;
+  error?: unknown;
+  meta?: unknown;
+}

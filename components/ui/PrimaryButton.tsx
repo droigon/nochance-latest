@@ -14,7 +14,7 @@ type ButtonVariant =
   | "lightRounded"
   | "pillSolid";
 
-type ButtonSize = "sm" | "md" | "lg" | "full";
+type ButtonSize = "sm" | "md" | "lg" | "full" | "half" | "quarter";
 
 interface PrimaryButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -65,6 +65,8 @@ export default function PrimaryButton({
     md: "text-base px-6 py-3",
     lg: "text-lg px-8 py-4",
     full: "w-full py-3 text-center justify-center",
+    half: " w-1/2 py-3 text-center justify-center",
+    quarter: "w-3/4 py-3 text-center justify-center",
   };
 
   const classNames = `${base} ${variants[variant]} ${sizes[size]} ${className}`;

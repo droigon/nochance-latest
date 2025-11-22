@@ -8,4 +8,12 @@ export const VERIFICATION_ROUTES = {
     `/api/v1/verification/${encodeURIComponent(businessId)}/business`,
   verifyBusiness: (businessId: string) =>
     `/api/v1/verification/${encodeURIComponent(businessId)}/verify`,
+  getStatus: (businessId: string, vendorType: string) =>
+    `/api/v1/verification/${encodeURIComponent(
+      businessId
+    )}/status?vendorType=${encodeURIComponent(vendorType)}`,
+  markStepComplete: (businessId: string, stepId: string) =>
+    `/api/v1/verification/${encodeURIComponent(
+      businessId
+    )}/${encodeURIComponent(stepId)}/mark-complete`,
 };

@@ -38,16 +38,16 @@ const trustedCompanies = [
 
 export default function TrustedCompanies() {
   return (
-    <section className="py-12 bg-grey-98 border-t relative">
-      <p className="text-center text-grey-24 text-md mb-6">
+    <section className="py-6 sm:py-8 md:py-10 lg:py-12 bg-grey-98 border-t relative">
+      <p className="text-center text-grey-24 text-xs sm:text-sm md:text-base mb-4 sm:mb-6">
         Trusted by credible Companies
       </p>
 
       {/* Constrained wrapper */}
-      <div className="relative max-w-6xl mx-auto overflow-hidden">
+      <div className="relative max-w-6xl mx-auto overflow-hidden px-2">
         {/* Fading shadows on both ends */}
-        <div className="pointer-events-none absolute top-0 left-0 h-full w-40 bg-gradient-to-r from-grey-98 to-transparent z-20" />
-        <div className="pointer-events-none absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-grey-98 to-transparent z-20" />
+        <div className="pointer-events-none absolute top-0 left-0 h-full w-16 sm:w-24 md:w-32 lg:w-40 bg-gradient-to-r from-grey-98 to-transparent z-20" />
+        <div className="pointer-events-none absolute top-0 right-0 h-full w-16 sm:w-24 md:w-32 lg:w-40 bg-gradient-to-l from-grey-98 to-transparent z-20" />
 
         {/* Scrolling container */}
         <div
@@ -57,7 +57,7 @@ export default function TrustedCompanies() {
           }}
         >
           {[...Array(3)].map((_, idx) => (
-            <div key={idx} className="flex items-center gap-12 mx-6 min-w-max">
+            <div key={idx} className="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mx-2 sm:mx-4 md:mx-6 min-w-max">
               {trustedCompanies.map((company, i) => (
                 <Link
                   key={`${idx}-${i}`}
@@ -71,7 +71,7 @@ export default function TrustedCompanies() {
                     alt={company.alt}
                     width={120}
                     height={40}
-                    className="opacity-80 hover:opacity-100 transition-opacity duration-300"
+                    className="w-20 h-auto sm:w-24 md:w-28 lg:w-32 opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </Link>
               ))}

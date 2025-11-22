@@ -46,13 +46,27 @@ function isAuthorizedForRoute(userRole: string, pathname: string): boolean {
   return isAuthorized;
 }
 
+function buildCsp() {
+  return `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://widget.dojah.io https:;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https:;
+    font-src 'self' data: https://fonts.gstatic.com https://fonts.gstatic.com/s/inter/ https://fonts.gstatic.com/s/readex/ https://fonts.gstatic.com/s/poppins/;
+    connect-src 'self' https://*.nextjs.org http://localhost:3000 http://localhost:2000 http://127.0.0.1:3000 http://127.0.0.1:2000 https://j0vc94b3-9999.uks1.devtunnels.ms https://api.dojah.io https://*.dojah.io https:;
+    frame-src 'self' https://widget.dojah.io https://*.dojah.io;
+    frame-ancestors 'none';
+    img-src 'self' data: https:;
+    form-action 'self';
+    base-uri 'self';
+    object-src 'none';
+    media-src 'self';
+  `
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname, origin, search } = req.nextUrl;
-
-  // Debug logging (remove in production)
-  if (process.env.NODE_ENV === "development") {
-    console.log(`[Middleware] ${req.method} ${pathname}, origin: ${origin}`);
-  }
 
   // allowlist to avoid redirect loops and permit static/_next assets
   const allowlist = [
@@ -237,25 +251,6 @@ export async function middleware(req: NextRequest) {
   const redirectResp = NextResponse.redirect(loginUrl);
   redirectResp.headers.set("Content-Security-Policy", buildCsp());
   return redirectResp;
-}
-
-function buildCsp() {
-  return `
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://widget.dojah.io https:;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https:;
-    font-src 'self' data: https://fonts.gstatic.com https://fonts.gstatic.com/s/inter/ https://fonts.gstatic.com/s/readex/ https://fonts.gstatic.com/s/poppins/;
-    connect-src 'self' https://*.nextjs.org http://localhost:3000 http://localhost:2000 http://127.0.0.1:3000 http://127.0.0.1:2000 https://j0vc94b3-9999.uks1.devtunnels.ms https://api.dojah.io https://*.dojah.io https:;
-    frame-src 'self' https://widget.dojah.io https://*.dojah.io;
-    frame-ancestors 'none';
-    img-src 'self' data: https:;
-    form-action 'self';
-    base-uri 'self';
-    object-src 'none';
-    media-src 'self';
-  `
-    .replace(/\s{2,}/g, " ")
-    .trim();
 }
 
 export const config = {

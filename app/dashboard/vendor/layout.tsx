@@ -16,10 +16,11 @@ export default function RootLayout({
         <Sidebar />
 
         <div className="flex-1 flex flex-col">
-          <Header userName="Benny Mulla" />
+          <Header />
           <main className="flex-1">{children}</main>
         </div>
       </div>
     </Providers>
   );
 }
+

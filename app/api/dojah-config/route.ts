@@ -51,6 +51,7 @@ export async function GET(req: Request) {
       type: "liveness",
       metadata: { user_id: "123" },
       config: { widget_id: process.env.DOJAH_WIDGET_ID! },
+      email: "ude.chekwube@gmail.com",
     },
   });
 }

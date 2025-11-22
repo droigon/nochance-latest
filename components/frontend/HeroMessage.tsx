@@ -28,19 +28,19 @@ export default function HeroMessage({
   return (
     <div
       role="status"
-      className={`${bg} border rounded-lg px-4 py-2 inline-flex items-center gap-3 max-w-2xl`}
+      className={`${bg} border rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 inline-flex items-center gap-2 sm:gap-3 max-w-xs sm:max-w-2xl`}
     >
-      <div className="text-sm leading-snug">{message}</div>
+      <div className="text-xs sm:text-sm leading-snug">{message}</div>
 
       {dismissible && (
         <button
           aria-label="Dismiss message"
           onClick={() => setVisible(false)}
-          className="ml-2 p-1 rounded hover:bg-black/5"
+          className="ml-1 sm:ml-2 p-1 rounded hover:bg-black/5 flex-shrink-0"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4"
+            className="w-3 h-3 sm:w-4 sm:h-4"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

@@ -63,25 +63,39 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center py-4 px-4 md:px-16 lg:px-28 xl:px-32 bg-white shadow-sm">
+    <header className="flex justify-between items-center py-3 md:py-4 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-28 2xl:px-32 bg-white shadow-sm sticky top-0 z-40">
       <Link
         href="/"
-        className="flex items-center gap-2 text-xl font-bold text-purple-700"
+        className="flex items-center gap-2 text-lg md:text-xl font-bold text-purple-700"
       >
         <Image
           src="/assets/logo/svg/Nochance_logo.svg"
           alt="Nochance Logo"
           width={150}
           height={40}
+          className="w-24 sm:w-32 md:w-40 h-auto"
         />
       </Link>
 
-      <nav className="hidden md:flex gap-6 text-gray-700">
-        <Link href="/write-review">Write a Review</Link>
-        <Link href="/categories">Categories</Link>
-        <Link href="/report-scam">Report A Scam</Link>
-        <Link href="/blog">Blog</Link>
-        <Link href="/contact-us">Contact Us</Link>
+      <nav className="hidden md:flex gap-4 lg:gap-6 text-xs lg:text-sm text-gray-700">
+        <Link href="/Search" className="hover:text-purple-600 transition">
+          Search
+        </Link>
+        <Link href="/write-review" className="hover:text-purple-600 transition">
+          Write a Review
+        </Link>
+        <Link href="/categories" className="hover:text-purple-600 transition">
+          Categories
+        </Link>
+        <Link href="/report-scam" className="hover:text-purple-600 transition">
+          Report A Scam
+        </Link>
+        <Link href="/blog" className="hover:text-purple-600 transition">
+          Blog
+        </Link>
+        <Link href="/contact-us" className="hover:text-purple-600 transition">
+          Contact Us
+        </Link>
       </nav>
 
       {loading ? (
@@ -96,17 +110,17 @@ export default function Header() {
           onMouseLeave={handleMouseLeave}
         >
           <div
-            className="flex items-center gap-2 cursor-pointer group"
+            className="flex items-center gap-1 md:gap-2 cursor-pointer group"
             onClick={() => setIsDropdownOpen((prev) => !prev)} // Click for mobile
           >
-            <div className="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 font-semibold">
+            <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 font-semibold text-xs md:text-sm">
               {getUserName().charAt(0).toUpperCase()}
             </div>
-            <span className="font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+            <span className="hidden sm:inline font-medium text-xs md:text-sm text-gray-700 group-hover:text-purple-600 transition-colors">
               {getUserName()}
             </span>
             <ChevronDown
-              className={`w-4 h-4 text-gray-400 transition-all duration-200 transform ${
+              className={`w-3 h-3 md:w-4 md:h-4 text-gray-400 transition-all duration-200 transform ${
                 isDropdownOpen
                   ? "rotate-180 text-purple-600"
                   : "group-hover:text-purple-600"
@@ -115,17 +129,17 @@ export default function Header() {
           </div>
 
           {isDropdownOpen && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+            <div className="absolute right-0 top-full mt-2 w-40 md:w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
               <Link
                 href="/profile"
-                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors"
+                className="flex items-center gap-3 px-3 md:px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors"
               >
                 <User className="w-4 h-4" />
                 Profile
               </Link>
               <Link
                 href="/settings"
-                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors"
+                className="flex items-center gap-3 px-3 md:px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors"
               >
                 <Settings className="w-4 h-4" />
                 Settings
@@ -134,7 +148,7 @@ export default function Header() {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors w-full text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-3 px-3 md:px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors w-full text-left disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <LogOut
                   className={`w-4 h-4 ${isLoggingOut ? "animate-spin" : ""}`}
@@ -145,16 +159,16 @@ export default function Header() {
           )}
         </div>
       ) : (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
           <Link
             href="/login"
-            className="px-4 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 border border-purple-600 text-purple-600 text-xs sm:text-sm rounded-lg hover:bg-purple-50 transition"
           >
             Login
           </Link>
           <Link
             href="/business"
-            className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:opacity-90 transition"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs sm:text-sm rounded-lg hover:opacity-90 transition"
           >
             For Businesses →
           </Link>

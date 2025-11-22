@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function StatsCard() {
   return (
-    <div className="w-full max-w-sm bg-white rounded-lg shadow-lg p-6 relative">
+    <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-4 md:p-6 relative">
       {/* orange badge */}
-      <div className="absolute -top-4 right-4 w-10 h-10 bg-orange-400 rounded-full flex items-center justify-center shadow-md overflow-hidden">
+      <div className="absolute -top-2 sm:-top-3 md:-top-4 right-2 sm:right-3 md:right-4 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-orange-400 rounded-full flex items-center justify-center shadow-md overflow-hidden">
         {/* Inlined Figma SVG (adapted to JSX) */}
         <svg
           width="100%"
@@ -59,39 +59,40 @@ export default function StatsCard() {
         </svg>
       </div>
 
-      <h4 className="text-sm text-gray-700">
+      <h4 className="text-xs sm:text-sm md:text-base text-gray-700">
         Customer Success Rate <span className="text-gray-400 text-xs">ℹ️</span>
       </h4>
 
-      <div className="mt-4 grid grid-cols-2 gap-4 items-start">
+      <div className="mt-3 sm:mt-4 grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 items-start">
         <div>
-          <div className="text-3xl font-semibold text-gray-900">52.04%</div>
-          <div className="text-sm text-green-500 mt-1">
+          <div className="text-lg sm:text-2xl md:text-3xl font-semibold text-gray-900">52.04%</div>
+          <div className="text-xs sm:text-sm text-green-500 mt-0.5 sm:mt-1">
             +2.5% from last year
           </div>
         </div>
         <div>
-          <div className="text-3xl font-semibold text-gray-900">45.4k</div>
-          <div className="text-sm text-green-500 mt-1">
+          <div className="text-lg sm:text-2xl md:text-3xl font-semibold text-gray-900">45.4k</div>
+          <div className="text-xs sm:text-sm text-green-500 mt-0.5 sm:mt-1">
             +54.5% from last year
           </div>
         </div>
       </div>
 
-      <div className="mt-4 text-sm text-gray-600 flex items-center gap-2">
-        <div className="w-2 h-2  rounded-full" />
+      <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-600 flex items-center gap-1 sm:gap-2">
+        <div className="w-2 h-2 rounded-full" />
         <Image
           src="/assets/icons/graph.svg"
           alt="Optimize Icon"
           width={12}
           height={12}
+          className="w-3 h-3 sm:w-4 sm:h-4"
         />
-        <div>Optimize again to get your best score</div>
+        <div className="truncate">Optimize again to get your best score</div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-3 sm:mt-4">
         {/* layered chart SVGs (lightweight placeholders from the provided assets) */}
-        <div className="w-full h-40 relative overflow-hidden rounded statscard">
+        <div className="w-full h-20 sm:h-24 md:h-40 relative overflow-hidden rounded statscard">
           {/* Replaced with Figma-exported SVG */}
           <svg
             width="316"

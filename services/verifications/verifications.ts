@@ -49,14 +49,36 @@ export const VerificationService = {
   async verifyVerification(
     businessId: string,
     data: VerificationVerifyDto
-  ): Promise<ApiResponse<any>> {
+  ): Promise<ApiResponse<unknown>> {
     const url = API_ROUTES.verifyBusiness(businessId);
     if (!data.category || !data.case || !data.value) {
       throw new Error("Invalid data for verifyVerification");
     }
-    return apiFetch<ApiResponse<any>>(url, {
+    return apiFetch<ApiResponse<unknown>>(url, {
       method: "POST",
       body: JSON.stringify(data),
+    });
+  },
+  async getStatus(
+    businessId: string,
+    vendorType: string
+  ): Promise<ApiResponse<unknown>> {
+    const url = API_ROUTES.getStatus(businessId, vendorType);
+    return apiFetch<ApiResponse<unknown>>(url, {
+      method: "GET",
+    });
+  },
+
+  async markStepComplete(
+    businessId: string,
+    stepId: string,
+    vendorType: string,
+    formData?: Record<string, unknown>
+  ): Promise<ApiResponse<unknown>> {
+    const url = API_ROUTES.markStepComplete(businessId, stepId);
+    return apiFetch<ApiResponse<unknown>>(url, {
+      method: "POST",
+      body: JSON.stringify({ vendorType, formData }),
     });
   },
 };
